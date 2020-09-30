@@ -1,0 +1,61 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Article - {{article.name}}{% endblock %}
+{% set section = article.section %}
+{% block body %}
+<div class="container">
+    {% include "partials/flashes.html.twig" %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{path('restaurant_index')}}">Restaurants</a></li>
+        <li class="breadcrumb-item"><a href="{{path('restaurant_show', {'id': section.menu.restaurant.id})}}">{{section.menu.restaurant.name}}</a></li>
+        <li class="breadcrumb-item"><a href="{{path('section_show', {'id': section.id})}}">{{section.name}}</a></li>
+        <li class="breadcrumb-item active">{{article.name}}</li>
+      </ol>
+    <div class="row mb-2">
+        <div class="col-12 col-md-8">
+            <img src="{{ asset("/media/images/uploads/articles/" ~ article.image) }}"
+                alt="bannière du {{article.name}}" class="img-fluid img-thumbnail" style="max-width: 555px;"
+                srcset="">
+        </div>
+        <div class="col-12 col-md-4">
+            <h1>Apropos de l'article</h1>
+            <h2 class="h4">Nom: {{article.name | capitalize }}</h1>
+                <h2 class="h4">Séction: {{section.name}}</h2>
+                <h2 class="h4">Options: {{article.options | length}}</h2>
+                <h2 class="h4">Prix (à partir de) : {{article.price | number_format('0', '', ' ') }} Fc</h2>
+                <a href="{{path('article_edit', {'id': article.id})}}" class="btn btn-primary">Editer</a>
+        </div>
+    </div>
+    <h1 >Apropos des options</h1>
+    <div class="btnAddContent mb-4">
+        <a href="{{path('option_new', {'article' : article.id})}}" id="addPart">
+            <i class="fas fa-plus mr-2"></i>Ajouter une option
+        </a>
+    </div>
+
+    <div class="row">
+        {% if article.options | length > 0 %}
+            {% for option in article.options %}
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-header">
+                            {{option.name}} ({{option.frenchType}})
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            {% for optionField in option.optionFields %}
+                                <li class="list-group-item">{{optionField.name}} <span class="float-right" >{{optionField.additionalPrice | number_format('0', '', ' ')}} Fc</span> </li>
+                            {% endfor %}
+                        </ul>
+                        <div class="card-footer">
+                            <a href="{{path('option_edit', {'option': option.id})}}" class="btn btn-primary btn-sm">Editer</a>
+                            <a href="#" class="btn btn-danger float-right btn-sm">Supprimer</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Aucune option disponible pour l'article {{article.name}}</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

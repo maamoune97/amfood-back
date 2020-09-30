@@ -1,0 +1,49 @@
+{% extends "restaurant_manager/base.html.twig" %}
+
+{% block title %}Connexion Restaurant{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-danger text-center" >Connexion</h1>
+    <div class="">
+        {% if error %}
+            <div class="row">
+                <div class="alert alert-danger col-md-6 offset-md-3 text-center" role="alert">
+                    Nom d'utilisateur ou mot de passe incorrect!
+                </div>
+            </div>
+        {% endif %}
+        <form action="{{path('restaurant_manager_login')}}" method="POST">
+            <div class="row">
+                <div class="col-12 col-md-6 offset-md-3">
+                    <div class="form-group">
+                        <label for="phone">Nom d'utilisateur</label>
+                        <input type="text" name="_username" id="phone" class="form-control {{error ? 'is-invalid'}}" value="{{lastUser}}" >
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 offset-md-3">
+                    <div class="form-group">
+                        <label for="password">Mot de passe</label>
+                        <input type="password" name="_password" id="password" class="form-control {{error ? 'is-invalid'}}">
+                    </div>
+                </div>
+                <div class="col-12 col-md-6"></div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-6 offset-md-3">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-danger btn-block" >Connexion</button>
+                    </div>
+                </div>
+            </div>
+            
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+    
+{% endblock %}

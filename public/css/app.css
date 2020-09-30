@@ -1,0 +1,95 @@
+.img-mini
+{
+    width: 120px;
+    /* height: 75px; */
+}
+
+.align-middle td
+{
+    vertical-align: middle;
+}
+
+#addGroup:hover
+{
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 5px;
+    cursor: pointer;
+}
+
+.ad-header-title
+{
+    padding: 2em;
+    background-size: cover;
+    background-position: center center;
+
+}
+
+.transparent
+{
+    background-color: rgba(255,255,255,0.5);
+}
+
+  .btnAddContent button
+{
+    font-family: 'Exo 2', sans-serif;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+}
+
+.btnAddContent a
+{
+    font-family: 'Exo 2', sans-serif;
+    letter-spacing: 0.5px;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #222;
+}
+
+.btnAddContent a:hover
+{
+    opacity: 1 !important;
+}
+
+.btnAddContent #addPart:hover
+{
+    color: #2196F3;
+    opacity: 1 !important;
+}
+
+.btnAddContent a i
+{
+    opacity: 0.7;
+}
+
+.clear
+{
+    clear: both;
+}
+
+/* class close à supprimer */
+.close
+{
+    margin-right: 5;
+    margin-top: 0;
+    cursor: pointer;
+    background-color: red;
+    color: black;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.breadcrumb
+{
+    background-color: transparent;
+}
+
+.resize{
+    height: 200px;
+    width: auto;
+}
+
+.waiting{
+    list-style: none;
+}

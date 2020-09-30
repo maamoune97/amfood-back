@@ -1,0 +1,27 @@
+{% extends "base.html.twig" %}
+
+{% block title %}editer le réstaurant{% endblock title %}
+
+{% block styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" />
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>editer le réstaurant</h1>
+    {% include "restaurant/_formRestaurant.html.twig" with {'submitBtnLabel': "editer le réstaurant"}  %}
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $(document).on('change', '.custom-file-input', function () {
+        let fileName = $(this).val().replace(/\\/g, 'browse').replace(/.*\//, 'parcourir');
+        $(this).parent('.custom-file').find('.custom-file-label').text(fileName);
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous"></script>
+<script>
+    $('select').select2();
+</script>
+{% endblock javascripts %}

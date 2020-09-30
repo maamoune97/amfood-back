@@ -1,0 +1,30 @@
+{% block _option_optionFields_widget %}
+    <div class="container">
+        <p>Definir les champs rélative au prix</p>
+        <input type="hidden" id="option-items-counter" value="0">
+        {{form_widget(form)}}
+        <button class="btn btn-primary btn-sm" id="add-option-item" type="button">Ajouter un champ</button>
+    </div>
+{% endblock _option_optionFields_widget %}
+
+{% block _option_optionFields_entry_row %}
+    {{form_widget(form)}}
+{% endblock _option_optionFields_entry_row %}
+
+{% block _option_optionFields_entry_widget %}
+    <div class="optionField-group" id="block_{{id}}">
+        <div class="row">
+            <div class="col-12 col-md-5">
+                {{form_row(form.name)}}
+            </div>
+            <div class="col-12 col-md-5">
+                {{form_row(form.additionalPrice)}}
+            </div>
+            <div class="col-12 col-md-2 d-flex align-items-center">
+                <button class="btn btn-outline-danger" type="button" title="supprimer" data-action="delete_option_item" data-target="#block_{{id}}">
+                    <i class="fas fa-trash fa-lg"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+{% endblock _option_optionFields_entry_widget %}

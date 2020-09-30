@@ -1,0 +1,103 @@
+{% extends "restaurant_manager/base.html.twig" %}
+
+{% block title %}Les commandes{% endblock %}
+
+{% block body %}
+<style>
+    .show-order{
+        cursor: pointer;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <h1 class="text-center h2">En attente (4)</h1>
+            <!-- <ul class="waiting"> -->
+                {% for i in 1..1 %}
+                    <!-- <li> -->
+                        <div class="card show-order mb-4" style="width: 18rem;">
+                            <div class="card-header">
+                                00{{i}}
+                            </div>
+                            <ul class="list-group list-group-flush">
+                            <li class="list-group-item">{{random(1,4)}}x {{ random(['Menu big tasty', 'Menu big mac', 'Menu big chicken tasty']) }}</li>
+                            <li class="list-group-item">{{random(1,3)}}x Mc fleury</li>
+                            </ul>
+                            <div class="card-footer">
+                                <span class="float-right text-danger">28-07-20 15h:45</span>
+                            </div>
+                        </div>
+                    <!-- </li> -->
+                {% endfor %}
+            <!-- </ul> -->
+        </div>
+        <div class="col-md-6">
+            <h1 class="text-center h2">Visualisation</h1>
+            <h2 class="h4">Numéro de commande: 057 <span class="float-right">Statut: en attente</span></h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Article</th>
+                        <th class="text-center">Qté</th>
+                        <th>Options</th>
+                        <th class="text-center">Prix</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in 1..3 %}
+                    <tr>
+                        <td>Menu Big Tasy</td>
+                        <td class="text-center" >1</td>
+                        <td>Fritte large + Fanta + suplements(sauce césar, salade, tomate)</td>
+                        <td class="text-center" >2 500 Fc</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <h2 class="h4 mt-4">Total de la commande : <span class="float-right">7 500 Fc</span></h2>
+            <div class="d-flex justify-content-around">
+                <button class="btn btn-danger" type="button">Refuser</button>
+                <button class="btn btn-success" type="button">Accepter</button>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <h1 class="text-center h2 ">En préparation (0)</h1>
+            <form action="{{path('restaurant_manager_order_check', {'user' : '131'})}} " method="POST">
+                <button class="btn btn-primary">Check users</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+const url = new URL('http://localhost:3000/hub');
+url.searchParams.append('topic', 'http://monsite.com/restaurant/');
+
+const eventSource = new EventSource(url, {withCredentials: true});
+
+// const newCommandNotificationAudio = new Audio('../../../public/swiftly.ogg')
+
+// The callback will be called every time an update is published
+eventSource.onmessage = e => {
+    let card = `<div class="card show-order mb-4" style="width: 18rem;">
+                    <div class="card-header">
+                        002
+                    </div>
+                    <ul class="list-group list-group-flush">
+                    <li class="list-group-item">1x Menu big tasty</li>
+                    <li class="list-group-item">1x Mc fleury</li>
+                    </ul>
+                    <div class="card-footer">
+                        <span class="float-right text-danger">28-07-20 15h:45</span>
+                    </div>
+                </div>`;
+    const cards = document.querySelectorAll('.show-order');
+    const lastCard = cards[cards.length -1];
+    lastCard.insertAdjacentHTML('afterend', card);
+    // newCommandNotificationAudio.play();
+    console.log(e);
+} // do something with the payload
+</script>
+{% endblock %}

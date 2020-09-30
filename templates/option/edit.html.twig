@@ -1,0 +1,15 @@
+{% extends "base.html.twig" %}
+{% form_theme form 'option/_formThemeCollectionType.html.twig' %}
+
+{% block title %}créer une option{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Modifier l'option</h1>
+        {% include "option/_form.html.twig" with {'submitBtnLabel' : 'Modifier l\'option'} %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+<script src="/js/handleOption.js"></script>
+{% endblock %}

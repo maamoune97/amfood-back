@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block title %}Modifier un article{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="mb-2">Modifier un article</h1>
+    {% include "article/_formArticle.html.twig" with {'submitBtnLabel': "modifier l'article"}  %}
+</div>
+{% endblock %}

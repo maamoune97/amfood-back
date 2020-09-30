@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Villes{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    {% include "partials/flashes.html.twig" %}
+    <div class="text-right mb-2">
+        <a href="{{path('city_create_update')}}" class="btn btn-primary"><i class="fas fa-plus fa-lg"></i> Ajouter une ville</a>
+    </div>
+    <h1 class="display-5 mb-3">Les villes couvert</h1>
+    <div class="row">
+        {% for island in islands %}
+        {% set totalRestaurants = 0 %}
+        <div class="col-12 col-md-4 mb-5">
+            <h2>{{island.name}}</h2>
+            {% if island.cities | length > 0 %}
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th class="text-center">Réstaurants</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for city in island.cities %}
+                    <tr>
+                        <td>{{city.name}}</td>
+                        <td class="text-center">{{city.restaurants | length}}</td>
+                        <td>
+                            <a href="#" title="Editer" class="btn btn-outline-primary btn-sm mr-3"><i
+                                    class="fas fa-pencil-alt"></i></a>
+                            <a href="#" title="Supprimer" class="btn btn-outline-danger btn-sm"><i
+                                    class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    {% set totalRestaurants = totalRestaurants + city.restaurants | length %}
+                    {% endfor %}
+                </tbody>
+            </table>
+            <span class="h5" >Nombre des villes: <span class="badge badge-primary">{{island.cities | length}}</span></span> <br>
+            <span class="h5" >Nombre des Réstaurants: <span class="badge badge-primary">{{totalRestaurants}}</span></span>
+            {% else %}
+            <p>Aucune ville couvert cette île</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

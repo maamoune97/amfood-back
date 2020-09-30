@@ -1,0 +1,41 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<div class="container">
+    {% include "partials/flashes.html.twig" %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{path('delivery_man_index')}}">Livreurs</a></li>
+        <li class="breadcrumb-item active">{{deliveryMan.user.fullname}}</li>
+      </ol>
+    <div class="row mb-2">
+        <div class="col-12 col-md-8">
+            {#<img src="{{ asset("/media/images/uploads/delivery_man/" ~ deliveryMan.user.picture) }}"
+                alt="avatar de {{deliveryMan.user.fullName}}" class="img-fluid img-thumbnail" style="max-width: 555px;"
+                srcset="" /> #}
+            <img src="http://lorempixel.com/400/200/people" alt="avatar de {{deliveryMan.user.fullName}}" class="img-fluid img-thumbnail" style="max-width: 555px;"srcset="" />
+        </div>
+        <div class="col-12 col-md-4">
+            <h1>Apropos du livreur</h1>
+            <h2 class="h4">Nom: {{deliveryMan.user.fullName | capitalize }}</h1>
+                <h2 class="h4">Île: {{deliveryMan.city.island.name}}</h2>
+                <h2 class="h4">Ville assurée: {{deliveryMan.city.name}}</h2>
+                <h2 class="h4">Téléphone: {{deliveryMan.user.phone}}</h2>
+                <h2 class="h4">Email: <a href="mailto:{{deliveryMan.user.email}}">{{deliveryMan.user.email}}</a></h2>
+                {#<h2 class="h4">Managers: {{restaurant.managers | length}}</h2>
+                #}
+                <h2 class="h4">En service: Oui</h2>
+                <a href="#" class="btn btn-primary mr-2">Editer</a>
+                <a href="#" class="btn btn-warning mr-2">bloquer</a>
+                <a href="#" class="btn btn-danger">Supprimer</a>
+        </div>
+    </div>
+    <h1 >livraisons</h1>
+    <!-- <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Livraison</th>
+            </tr>
+        </thead>
+    </table> -->
+</div>
+{% endblock %}

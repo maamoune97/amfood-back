@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block body %}
+
+<div class="container mt-5">
+    <h1 class="text-center" >Connexion</h1>
+    <div class="bg-light">
+        <form action="{{path('account_login')}}" method="post">
+            <div class="row">
+                <div class="col-12 col-md-6 offset-md-3">
+                    <div class="form-group">
+                        <label for="phone">Numéro de téléphone</label>
+                        <input type="text" name="_username" id="phone" class="form-control">
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 offset-md-3">
+                    <div class="form-group">
+                        <label for="password">Mot de passe</label>
+                        <input type="password" name="_password" id="password" class="form-control">
+                    </div>
+                </div>
+                <div class="col-12 col-md-6"></div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-6 offset-md-3">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success btn-block" >Connexion</button>
+                    </div>
+                </div>
+            </div>
+            
+        </form>
+    </div>
+</div>
+{% endblock %}
