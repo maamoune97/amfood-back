@@ -44,14 +44,9 @@ class OptionField
      */
     private $myOption;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Order::class, mappedBy="optionFieldsChosen")
-     */
-    private $orders;
-
     public function __construct()
     {
-        $this->orders = new ArrayCollection();
+        
     }
 
     public function getId(): ?int
@@ -91,34 +86,6 @@ class OptionField
     public function setMyOption(?Option $myOption): self
     {
         $this->myOption = $myOption;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Order[]
-     */
-    public function getOrders(): Collection
-    {
-        return $this->orders;
-    }
-
-    public function addOrder(Order $order): self
-    {
-        if (!$this->orders->contains($order)) {
-            $this->orders[] = $order;
-            $order->addOptionFieldsChosen($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOrder(Order $order): self
-    {
-        if ($this->orders->contains($order)) {
-            $this->orders->removeElement($order);
-            $order->removeOptionFieldsChosen($this);
-        }
 
         return $this;
     }

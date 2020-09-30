@@ -74,9 +74,9 @@ class Article
     private $options;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Order::class, mappedBy="articles")
+     * @ORM\OneToMany(targetEntity=ArticlePack::class, mappedBy="article")
      */
-    private $orders;
+    private $articlePacks;
 
     /**
      * Remove automaticaly image File when Article was removed
@@ -92,7 +92,7 @@ class Article
     public function __construct()
     {
         $this->options = new ArrayCollection();
-        $this->orders = new ArrayCollection();
+        $this->articlePacks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -192,28 +192,31 @@ class Article
     }
 
     /**
-     * @return Collection|Order[]
+     * @return Collection|ArticlePack[]
      */
-    public function getOrders(): Collection
+    public function getArticlePacks(): Collection
     {
-        return $this->orders;
+        return $this->articlePacks;
     }
 
-    public function addOrder(Order $order): self
+    public function addArticlePack(ArticlePack $articlePack): self
     {
-        if (!$this->orders->contains($order)) {
-            $this->orders[] = $order;
-            $order->addArticle($this);
+        if (!$this->articlePacks->contains($articlePack)) {
+            $this->articlePacks[] = $articlePack;
+            $articlePack->setArticle($this);
         }
 
         return $this;
     }
 
-    public function removeOrder(Order $order): self
+    public function removeArticlePack(ArticlePack $articlePack): self
     {
-        if ($this->orders->contains($order)) {
-            $this->orders->removeElement($order);
-            $order->removeArticle($this);
+        if ($this->articlePacks->contains($articlePack)) {
+            $this->articlePacks->removeElement($articlePack);
+            // set the owning side to null (unless already changed)
+            if ($articlePack->getArticle() === $this) {
+                $articlePack->setArticle(null);
+            }
         }
 
         return $this;

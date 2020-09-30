@@ -33,12 +33,6 @@ class Order
     private $customer;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Article::class, inversedBy="orders")
-     * @Groups({"user_read", "orderWrite"})
-     */
-    private $articles;
-
-    /**
      * @ORM\Column(type="datetime")
      * @Groups({"user_read", "orderWrite"})
      */
@@ -56,20 +50,13 @@ class Order
     private $delivery;
 
     /**
-     * @ORM\ManyToMany(targetEntity=OptionField::class, inversedBy="orders")
-     * @Groups({"user_read", "orderWrite"})
-     */
-    private $optionFieldsChosen;
-
-    /**
      * @ORM\OneToOne(targetEntity=Rating::class, mappedBy="orderConcerned", cascade={"persist", "remove"})
      */
     private $rating;
 
     public function __construct()
     {
-        $this->articles = new ArrayCollection();
-        $this->optionFieldsChosen = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -85,32 +72,6 @@ class Order
     public function setCustomer(?User $customer): self
     {
         $this->customer = $customer;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Article[]
-     */
-    public function getArticles(): Collection
-    {
-        return $this->articles;
-    }
-
-    public function addArticle(Article $article): self
-    {
-        if (!$this->articles->contains($article)) {
-            $this->articles[] = $article;
-        }
-
-        return $this;
-    }
-
-    public function removeArticle(Article $article): self
-    {
-        if ($this->articles->contains($article)) {
-            $this->articles->removeElement($article);
-        }
 
         return $this;
     }
@@ -151,32 +112,6 @@ class Order
         // set the owning side of the relation if necessary
         if ($delivery->getCommand() !== $this) {
             $delivery->setCommand($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|OptionField[]
-     */
-    public function getOptionFieldsChosen(): Collection
-    {
-        return $this->optionFieldsChosen;
-    }
-
-    public function addOptionFieldsChosen(OptionField $optionFieldsChosen): self
-    {
-        if (!$this->optionFieldsChosen->contains($optionFieldsChosen)) {
-            $this->optionFieldsChosen[] = $optionFieldsChosen;
-        }
-
-        return $this;
-    }
-
-    public function removeOptionFieldsChosen(OptionField $optionFieldsChosen): self
-    {
-        if ($this->optionFieldsChosen->contains($optionFieldsChosen)) {
-            $this->optionFieldsChosen->removeElement($optionFieldsChosen);
         }
 
         return $this;
