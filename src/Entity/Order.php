@@ -54,9 +54,14 @@ class Order
      */
     private $rating;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ArticlePack::class, mappedBy="command", orphanRemoval=true)
+     */
+    private $articlePacks;
+
     public function __construct()
     {
-
+        $this->articlePacks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -129,6 +134,37 @@ class Order
         // set the owning side of the relation if necessary
         if ($rating->getOrderConcerned() !== $this) {
             $rating->setOrderConcerned($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ArticlePack[]
+     */
+    public function getArticlePacks(): Collection
+    {
+        return $this->articlePacks;
+    }
+
+    public function addArticlePack(ArticlePack $articlePack): self
+    {
+        if (!$this->articlePacks->contains($articlePack)) {
+            $this->articlePacks[] = $articlePack;
+            $articlePack->setCommand($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticlePack(ArticlePack $articlePack): self
+    {
+        if ($this->articlePacks->contains($articlePack)) {
+            $this->articlePacks->removeElement($articlePack);
+            // set the owning side to null (unless already changed)
+            if ($articlePack->getCommand() === $this) {
+                $articlePack->setCommand(null);
+            }
         }
 
         return $this;

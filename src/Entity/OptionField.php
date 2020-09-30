@@ -44,9 +44,14 @@ class OptionField
      */
     private $myOption;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ArticlePack::class, mappedBy="optionField")
+     */
+    private $articlePacks;
+
     public function __construct()
     {
-        
+        $this->articlePacks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -86,6 +91,37 @@ class OptionField
     public function setMyOption(?Option $myOption): self
     {
         $this->myOption = $myOption;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ArticlePack[]
+     */
+    public function getArticlePacks(): Collection
+    {
+        return $this->articlePacks;
+    }
+
+    public function addArticlePack(ArticlePack $articlePack): self
+    {
+        if (!$this->articlePacks->contains($articlePack)) {
+            $this->articlePacks[] = $articlePack;
+            $articlePack->setOptionField($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticlePack(ArticlePack $articlePack): self
+    {
+        if ($this->articlePacks->contains($articlePack)) {
+            $this->articlePacks->removeElement($articlePack);
+            // set the owning side to null (unless already changed)
+            if ($articlePack->getOptionField() === $this) {
+                $articlePack->setOptionField(null);
+            }
+        }
 
         return $this;
     }

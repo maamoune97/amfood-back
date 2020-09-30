@@ -28,6 +28,17 @@ class ArticlePack
      */
     private $quantity;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="articlePacks")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $command;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=OptionField::class, inversedBy="articlePacks")
+     */
+    private $optionField;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -53,6 +64,30 @@ class ArticlePack
     public function setQuantity(int $quantity): self
     {
         $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getCommand(): ?Order
+    {
+        return $this->command;
+    }
+
+    public function setCommand(?Order $command): self
+    {
+        $this->command = $command;
+
+        return $this;
+    }
+
+    public function getOptionField(): ?OptionField
+    {
+        return $this->optionField;
+    }
+
+    public function setOptionField(?OptionField $optionField): self
+    {
+        $this->optionField = $optionField;
 
         return $this;
     }
