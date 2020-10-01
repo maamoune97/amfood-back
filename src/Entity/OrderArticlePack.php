@@ -3,17 +3,17 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\ArticlePackRepository;
+use App\Repository\OrderArticlePackRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity(repositoryClass=ArticlePackRepository::class)
+ * @ORM\Entity(repositoryClass=OrderArticlePackRepository::class)
  * @ApiResource(
  * normalizationContext={"groups"={"orderWrite"}}
  * )
  */
-class ArticlePack
+class OrderArticlePack
 {
     /**
      * @ORM\Id()
@@ -24,7 +24,7 @@ class ArticlePack
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Article::class, inversedBy="articlePacks")
+     * @ORM\ManyToOne(targetEntity=Article::class, inversedBy="orderArticlePacks")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"orderWrite"})
      */
@@ -37,13 +37,13 @@ class ArticlePack
     private $quantity;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="articlePacks")
+     * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="orderArticlePacks")
      * @ORM\JoinColumn(nullable=false)
      */
     private $command;
 
     /**
-     * @ORM\ManyToOne(targetEntity=OptionField::class, inversedBy="articlePacks")
+     * @ORM\ManyToOne(targetEntity=OptionField::class, inversedBy="orderArticlePacks")
      * @Groups({"orderWrite"})
      */
     private $optionField;

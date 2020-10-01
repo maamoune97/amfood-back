@@ -45,13 +45,13 @@ class OptionField
     private $myOption;
 
     /**
-     * @ORM\OneToMany(targetEntity=ArticlePack::class, mappedBy="optionField")
+     * @ORM\OneToMany(targetEntity=OrderArticlePack::class, mappedBy="optionField")
      */
-    private $articlePacks;
+    private $orderArticlePacks;
 
     public function __construct()
     {
-        $this->articlePacks = new ArrayCollection();
+        $this->orderArticlePacks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -96,30 +96,30 @@ class OptionField
     }
 
     /**
-     * @return Collection|ArticlePack[]
+     * @return Collection|OrderArticlePack[]
      */
-    public function getArticlePacks(): Collection
+    public function getOrderArticlePacks(): Collection
     {
-        return $this->articlePacks;
+        return $this->orderArticlePacks;
     }
 
-    public function addArticlePack(ArticlePack $articlePack): self
+    public function addOrderArticlePack(OrderArticlePack $orderArticlePack): self
     {
-        if (!$this->articlePacks->contains($articlePack)) {
-            $this->articlePacks[] = $articlePack;
-            $articlePack->setOptionField($this);
+        if (!$this->orderArticlePacks->contains($orderArticlePack)) {
+            $this->orderArticlePacks[] = $orderArticlePack;
+            $orderArticlePack->setOptionField($this);
         }
 
         return $this;
     }
 
-    public function removeArticlePack(ArticlePack $articlePack): self
+    public function removeOrderArticlePack(OrderArticlePack $orderArticlePack): self
     {
-        if ($this->articlePacks->contains($articlePack)) {
-            $this->articlePacks->removeElement($articlePack);
+        if ($this->orderArticlePacks->contains($orderArticlePack)) {
+            $this->orderArticlePacks->removeElement($orderArticlePack);
             // set the owning side to null (unless already changed)
-            if ($articlePack->getOptionField() === $this) {
-                $articlePack->setOptionField(null);
+            if ($orderArticlePack->getOptionField() === $this) {
+                $orderArticlePack->setOptionField(null);
             }
         }
 

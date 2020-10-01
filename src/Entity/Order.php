@@ -55,14 +55,14 @@ class Order
     private $rating;
 
     /**
-     * @ORM\OneToMany(targetEntity=ArticlePack::class, mappedBy="command", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=OrderArticlePack::class, mappedBy="command", orphanRemoval=true)
      * @Groups({"user_read", "orderWrite"})
      */
-    private $articlePacks;
+    private $orderArticlePacks;
 
     public function __construct()
     {
-        $this->articlePacks = new ArrayCollection();
+        $this->orderArticlePacks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -141,30 +141,30 @@ class Order
     }
 
     /**
-     * @return Collection|ArticlePack[]
+     * @return Collection|OrderArticlePack[]
      */
-    public function getArticlePacks(): Collection
+    public function getOrderArticlePacks(): Collection
     {
-        return $this->articlePacks;
+        return $this->orderArticlePacks;
     }
 
-    public function addArticlePack(ArticlePack $articlePack): self
+    public function addOrderArticlePack(OrderArticlePack $orderArticlePack): self
     {
-        if (!$this->articlePacks->contains($articlePack)) {
-            $this->articlePacks[] = $articlePack;
-            $articlePack->setCommand($this);
+        if (!$this->orderArticlePacks->contains($orderArticlePack)) {
+            $this->orderArticlePacks[] = $orderArticlePack;
+            $orderArticlePack->setCommand($this);
         }
 
         return $this;
     }
 
-    public function removeArticlePack(ArticlePack $articlePack): self
+    public function removeOrderArticlePack(OrderArticlePack $orderArticlePack): self
     {
-        if ($this->articlePacks->contains($articlePack)) {
-            $this->articlePacks->removeElement($articlePack);
+        if ($this->orderArticlePacks->contains($orderArticlePack)) {
+            $this->orderArticlePacks->removeElement($orderArticlePack);
             // set the owning side to null (unless already changed)
-            if ($articlePack->getCommand() === $this) {
-                $articlePack->setCommand(null);
+            if ($orderArticlePack->getCommand() === $this) {
+                $orderArticlePack->setCommand(null);
             }
         }
 

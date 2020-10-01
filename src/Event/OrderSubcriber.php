@@ -42,9 +42,9 @@ class OrderSubcriber implements EventSubscriberInterface
             $order->setCustomer($this->security->getUser());
             $order->setCreatedAt(new DateTime());
 
-            foreach ($order->getArticlePacks() as $articlePack) {
-                $articlePack->setCommand($order);
-                $this->manager->persist($articlePack);
+            foreach ($order->getOrderArticlePacks() as $orderArticlePack) {
+                $orderArticlePack->setCommand($order);
+                $this->manager->persist($orderArticlePack);
 
             }
 

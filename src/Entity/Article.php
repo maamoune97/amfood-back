@@ -74,9 +74,9 @@ class Article
     private $options;
 
     /**
-     * @ORM\OneToMany(targetEntity=ArticlePack::class, mappedBy="article")
+     * @ORM\OneToMany(targetEntity=OrderArticlePack::class, mappedBy="article")
      */
-    private $articlePacks;
+    private $orderArticlePacks;
 
     /**
      * Remove automaticaly image File when Article was removed
@@ -92,7 +92,7 @@ class Article
     public function __construct()
     {
         $this->options = new ArrayCollection();
-        $this->articlePacks = new ArrayCollection();
+        $this->orderArticlePacks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -192,30 +192,30 @@ class Article
     }
 
     /**
-     * @return Collection|ArticlePack[]
+     * @return Collection|OrderArticlePack[]
      */
-    public function getArticlePacks(): Collection
+    public function getOrderArticlePacks(): Collection
     {
-        return $this->articlePacks;
+        return $this->orderArticlePacks;
     }
 
-    public function addArticlePack(ArticlePack $articlePack): self
+    public function addOrderArticlePack(OrderArticlePack $orderArticlePack): self
     {
-        if (!$this->articlePacks->contains($articlePack)) {
-            $this->articlePacks[] = $articlePack;
-            $articlePack->setArticle($this);
+        if (!$this->orderArticlePacks->contains($orderArticlePack)) {
+            $this->orderArticlePacks[] = $orderArticlePack;
+            $orderArticlePack->setArticle($this);
         }
 
         return $this;
     }
 
-    public function removeArticlePack(ArticlePack $articlePack): self
+    public function removeOrderArticlePack(OrderArticlePack $orderArticlePack): self
     {
-        if ($this->articlePacks->contains($articlePack)) {
-            $this->articlePacks->removeElement($articlePack);
+        if ($this->orderArticlePacks->contains($orderArticlePack)) {
+            $this->orderArticlePacks->removeElement($orderArticlePack);
             // set the owning side to null (unless already changed)
-            if ($articlePack->getArticle() === $this) {
-                $articlePack->setArticle(null);
+            if ($orderArticlePack->getArticle() === $this) {
+                $orderArticlePack->setArticle(null);
             }
         }
 
