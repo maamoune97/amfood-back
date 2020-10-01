@@ -27,20 +27,20 @@ class OptionField
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"orderWrite", "option_field_read"})
+     * @Groups({"option_field_read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"orderWrite", "option_field_read"})
+     * @Groups({"option_field_read"})
      */
     private $additionalPrice;
 
     /**
      * @ORM\ManyToOne(targetEntity=Option::class, inversedBy="optionFields")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"orderWrite", "option_field_read"})
+     * @Groups({"option_field_read"})
      */
     private $myOption;
 

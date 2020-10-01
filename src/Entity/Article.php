@@ -38,14 +38,14 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"restaurants_subresource", "orderWrite"})
+     * @Groups({"restaurants_subresource"})
      * @Assert\NotNull(message ="Entrez le nom de l'article")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=500, nullable=true)
-     * @Groups({"restaurants_subresource", "orderWrite"})
+     * @Groups({"restaurants_subresource"})
      */
     private $ingredient;
 

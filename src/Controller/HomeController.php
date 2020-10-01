@@ -5,13 +5,11 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
-    * @Route("/admin", name="home_")
-*/
+
 class HomeController extends AbstractController
 {
     /**
-     * @Route("/", name="index")
+     * @Route("/admin/home", name="home_index")
      */
     public function index()
     {
@@ -19,4 +17,14 @@ class HomeController extends AbstractController
             
         ]);
     }
+
+    /**
+     * @Route("/", name="index")
+     */
+    public function redirectToIndex()
+    {
+        return $this->redirectToRoute('home_index');
+    }
+
+
 }

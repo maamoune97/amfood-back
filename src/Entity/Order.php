@@ -56,6 +56,7 @@ class Order
 
     /**
      * @ORM\OneToMany(targetEntity=ArticlePack::class, mappedBy="command", orphanRemoval=true)
+     * @Groups({"user_read", "orderWrite"})
      */
     private $articlePacks;
 

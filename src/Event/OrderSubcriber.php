@@ -5,6 +5,7 @@ namespace App\Event;
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Entity\Order;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -13,10 +14,12 @@ use Symfony\Component\Security\Core\Security;
 class OrderSubcriber implements EventSubscriberInterface
 {
     private $security;
+    private $manager;
 
-    public function __construct(Security $security)
+    public function __construct(Security $security, EntityManagerInterface $manager)
     {
         $this->security = $security;
+        $this->manager = $manager;
     }
 
     public static function getSubscribedEvents()
@@ -38,6 +41,12 @@ class OrderSubcriber implements EventSubscriberInterface
 
             $order->setCustomer($this->security->getUser());
             $order->setCreatedAt(new DateTime());
+
+            foreach ($order->getArticlePacks() as $articlePack) {
+                $articlePack->setCommand($order);
+                $this->manager->persist($articlePack);
+
+            }
 
             //Gerer les options des articles
             //dd($order);
