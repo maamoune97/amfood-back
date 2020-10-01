@@ -101,6 +101,11 @@ class Restaurant
      * @ORM\Column(type="string", length=100)
      */
     private $speciality;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="restaurant")
+     */
+    private $orders;
     
     /**
      * @ORM\PrePersist
@@ -135,11 +140,25 @@ class Restaurant
         }
     }
 
+    /**
+     * get stars average
+     *@Groups({"restaurants_subresource"})
+     * @return float
+     */
+    public function getAvgStars() : float
+    {
+        $totalStars = array_reduce($this->getOrders()->toArray(), function($stars, $order){
+            return $stars + $order->getRating()->getRestaurantStars();
+        }, 0);
+        
+        return round($totalStars / count($this->getOrders()), 1, PHP_ROUND_HALF_ODD);
+    }
     
     public function __construct()
     {
         $this->menus = new ArrayCollection();
         $this->managers = new ArrayCollection();
+        $this->orders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -283,6 +302,37 @@ class Restaurant
     public function setSpeciality(string $speciality): self
     {
         $this->speciality = $speciality;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Order[]
+     */
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
+
+    public function addOrder(Order $order): self
+    {
+        if (!$this->orders->contains($order)) {
+            $this->orders[] = $order;
+            $order->setRestaurant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrder(Order $order): self
+    {
+        if ($this->orders->contains($order)) {
+            $this->orders->removeElement($order);
+            // set the owning side to null (unless already changed)
+            if ($order->getRestaurant() === $this) {
+                $order->setRestaurant(null);
+            }
+        }
 
         return $this;
     }

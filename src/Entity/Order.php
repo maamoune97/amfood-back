@@ -60,6 +60,12 @@ class Order
      */
     private $orderArticlePacks;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Restaurant::class, inversedBy="orders")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $restaurant;
+
     public function __construct()
     {
         $this->orderArticlePacks = new ArrayCollection();
@@ -167,6 +173,18 @@ class Order
                 $orderArticlePack->setCommand(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRestaurant(): ?Restaurant
+    {
+        return $this->restaurant;
+    }
+
+    public function setRestaurant(?Restaurant $restaurant): self
+    {
+        $this->restaurant = $restaurant;
 
         return $this;
     }
