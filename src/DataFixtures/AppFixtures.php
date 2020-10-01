@@ -7,6 +7,8 @@ use App\Entity\City;
 use App\Entity\Island;
 use App\Entity\Menu;
 use App\Entity\Order;
+use App\Entity\OrderArticlePack;
+use App\Entity\Rating;
 use App\Entity\Restaurant;
 use App\Entity\Section;
 use App\Entity\TemporaryRestaurantPlainTextPassword;
@@ -40,7 +42,7 @@ class AppFixtures extends Fixture
             ];
         
         $users = [];
-        $restaurants = [];
+        $articles = [];
 
         //creation user
         $user = new User();
@@ -130,37 +132,47 @@ class AppFixtures extends Fixture
                             
                             $manager->persist($article);
 
-                            // $restaurants[] = $restaurant;
+                            if ($faker->boolean(20)) {
+                               $articles[] = $article; 
+                            }
                             
                         }
                     }
 
-                    /*
-                    foreach ($restaurant->getMenu()->getSections() as $section) {
-                        
-                        if ($faker->boolean) {
-                            $articles = $section->getArticles();
-                            $order = new Order();
+                    for ($o=0; $o < mt_rand(0, 10); $o++)
+                    {
+                        $order = new Order();
 
-                            $order->setCreatedAt(new DateTime())
-                                ->setCustomer($faker->randomElement($users))
-                                ->setStatus('1')
-                                ;
-            
-                                for ($a=0; $a < mt_rand(1,5); $a++) {
-                                    
-                                    $order->addArticle($faker->randomElement($articles));
-                                }
+                        $order->setCreatedAt(new DateTime())
+                            ->setCustomer($faker->randomElement($users))
+                            ->setStatus('0')
+                            ;
+
+                            for ($oap=0; $oap < mt_rand(1,5); $oap++) {
+
+                                $orderArticlePack = new OrderArticlePack();
+                                $orderArticlePack->setArticle($faker->randomElement($articles))
+                                                 ->setQuantity(mt_rand(1,4))
+                                                 ->setCommand($order);
+                                // $order->addOrderArticlePack($orderArticlePack);
+                                $manager->persist($orderArticlePack);
+                            }
                         $manager->persist($order);
-                        }
 
+                        $rating = new Rating();
+
+                        $rating->setDeliveryManStars(mt_rand(1,5))
+                               ->setDeliveryManComment($faker->words(mt_rand(3,7), true))
+                               ->setRestaurantStars((mt_rand(1,5)))
+                               ->setRestaurantComment($faker->words(mt_rand(3,7), true))
+                               ->setOrderConcerned($order);
+                        $manager->persist($rating);
                     }
-                    */
 
                 }
             }
             
-        }        
+        }
 
         $manager->flush();
 
