@@ -1,36 +1,53 @@
 {% extends "base.html.twig" %}
 
-{% block styles %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" />
-{% endblock %}
-
 {% block body %}
 <div class="container">
-    <h1>Ajouter un livreur</h1>
-
-    {{form_start(form)}}
-
-    <div class="row">
-        <div class="col-12 col-md-6">
-            {{form_row(form.user)}}
+    <h1 class="h2">verification du compte utilisateur</h1>
+    {{form_start(searchUserform)}}
+        <div class="row">
+            <div class="col-12 col-md-6">
+                {{form_row(searchUserform.phone)}}
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Verifier le numéro</button>
+                </div>
+            </div>
         </div>
-        <div class="col-12 col-md-6">
-            {{form_row(form.city)}}
+    {{form_end(searchUserform)}}
+
+    {% if user %}
+        <div class="mt-4">
+            <h1 class="h3">Le compte <strong>{{user.phone}}</strong> existe <i class="fas fa-check text-success"></i></h1>
+            <div class="row">
+                <div class="col-12 col-md-4">
+                    <img src="/media/images/uploads/users/parker.jpg" alt="avatar du compte" class="user-avatar img-fluid img-thumbnail" />
+                </div>
+                <div class="col-12 col-md-4">
+                    <h2 class="h4">Details du compte</h2>
+                    <h3 class="h5">Nom complet: {{user.fullName}} </h3>
+                    <h3 class="h5">Adresse mail: {{user.email}} </h3>
+                    <h3 class="h5">Inscrit le: {{user.createdAt | date("m/d/Y H:i") }} </h3>
+                    <h3 class="h5">Livreur: {{user.deliveryMan ? 'Oui' : 'non'}} </h3>
+                    <!-- <h3 class="h5">Manageur de restaurant: <span id="account-manager"></span></h3> -->
+                </div>
+                <div class="col-12 col-md-4">
+                    <h2 class="h4">Inscrire livreur</h2>
+                    {{form_start(deliveryManForm)}}
+                        {{form_row(deliveryManForm.city)}}
+                        {{form_widget(deliveryManForm.phone, {'attr' : {'value': user.phone}})}}
+                        <button class="btn btn-primary" type="submit">Inscrire</button>
+                    {{form_end(deliveryManForm)}}
+                </div>
+            </div>
         </div>
-    </div>
-
-    <div class="form-group">
-        <button type="submit" class="float-right btn btn-success">Ajouter le livreur</button>
-    </div>
-
-    {{form_end(form)}}
+    {% else %}
+        {% if tryToFind %}
+            <div class="mt-d">
+                <h1 class="h3">Ce compte n'existe pas <i class="fas fa-ban text-danger"></i></h1>
+            </div>
+        {% endif %}
+    {% endif %}
 
 </div>
-{% endblock %}
-
-{% block javascripts %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous"></script>
-<script>
-    $('select').select2();
-</script>
-{% endblock javascripts %}
+{% endblock body %}

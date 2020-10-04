@@ -49,9 +49,9 @@ class AppFixtures extends Fixture
         
         $passwordHash = $this->encoder->encodePassword($user, 'password');
 
-        $user->setFullName('Maamoune Hasane')
+        $user->setFullName('Maamoune Hassane')
              ->setPhone('0762811077')
-            //  ->setRoles(['ROLE_USER'])
+             ->setCreatedAt(new DateTime())
              ->setEmail('maamoune97bv@gmail.com')
              ->setRoles(['ROLE_MANAGER', 'ROLE_ADMIN'])
              ->setPassword($passwordHash);
@@ -63,7 +63,9 @@ class AppFixtures extends Fixture
             
             $user = new User();
             $user->setFullName($faker->firstName . ' ' . $faker->lastName)
-                 ->setPhone($faker->phoneNumber)
+                 ->setPhone($faker->e164PhoneNumber)
+                 ->setEmail($faker->freeEmail)
+                 ->setCreatedAt(new DateTime())
                  ->setPassword($passwordHash);
             
             $manager->persist($user);

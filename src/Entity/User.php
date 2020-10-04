@@ -75,6 +75,11 @@ class User implements UserInterface
     private $deliveryMan;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
      * @ORM\PrePersist
      * @ORM\PreUpdate
      *
@@ -100,6 +105,37 @@ class User implements UserInterface
     {
         $this->orders = new ArrayCollection();
         $this->deliveries = new ArrayCollection();
+    }
+
+    /**
+     * add a user role
+     *
+     * @param string $role
+     * @return self
+     */
+    public function addRole(string $role) : self
+    {
+        if (!in_array($role, $this->roles)) {
+            $this->roles[] = $role;
+        }
+
+        return $this;
+    }
+
+    /**
+     * remove a user role
+     *
+     * @param string $role
+     * @return self
+     */
+    public function removeRole(string $role) : self
+    {
+        if (($key = array_search($role, $this->roles)) !== false) {
+            unset($this->roles[$key]);
+            $roles = array_values($this->roles);
+            $this->setRoles($roles);
+        }
+        return $this;
     }
 
     public function getId(): ?int
@@ -260,6 +296,18 @@ class User implements UserInterface
         if ($deliveryMan->getUser() !== $this) {
             $deliveryMan->setUser($this);
         }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

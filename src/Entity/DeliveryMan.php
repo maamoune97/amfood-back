@@ -2,13 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\DeliveryManRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\DeliveryManRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass=DeliveryManRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class DeliveryMan
 {
@@ -40,6 +43,20 @@ class DeliveryMan
      * @ORM\OneToMany(targetEntity=Delivery::class, mappedBy="deliveryMan")
      */
     private $deliveries;
+
+    public $phone;
+
+    /**
+     * @ORM\PrePersist
+     *
+     * @return void
+     */
+    public function initializeCreateAt()
+    {
+        if (!$this->createdAt) {
+            $this->setCreatedAt(new DateTime());
+        }
+    }
 
     public function __construct()
     {

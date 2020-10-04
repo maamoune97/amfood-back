@@ -99,6 +99,7 @@ class Restaurant
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Groups({"restaurants_subresource"})
      */
     private $speciality;
 
