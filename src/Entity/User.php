@@ -65,11 +65,6 @@ class User implements UserInterface
     private $orders;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Restaurant::class, inversedBy="manager")
-     */
-    private $restaurant;
-
-    /**
      * @ORM\OneToOne(targetEntity=DeliveryMan::class, mappedBy="user", cascade={"persist", "remove"})
      */
     private $deliveryMan;
@@ -80,26 +75,9 @@ class User implements UserInterface
     private $createdAt;
 
     /**
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     *
-     * @return void
+     * @ORM\OneToOne(targetEntity=RestaurantManager::class, mappedBy="user", cascade={"persist", "remove"})
      */
-    public function handleManagersRole()
-    {
-        // if ($this->getRestaurant() && !in_array('ROLE_MANAGER',$this->getRoles()))
-        // {
-        //     $this->setRoles(['ROLE_MANAGER']);
-        // }else{
-        //     $roles = [];
-        //     for ($r=0; $r < count($this->getRoles()) ; $r++) { 
-        //         if ($this->getRoles()[$r] !== 'ROLE_MANAGER') {
-        //             $roles[] = $this->getRoles()[$r];
-        //         }
-        //     }
-        //     $this->setRoles($roles);
-        // }
-    }
+    private $restaurantManager;
 
     public function __construct()
     {
@@ -271,18 +249,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getRestaurant(): ?Restaurant
-    {
-        return $this->restaurant;
-    }
-
-    public function setRestaurant(?Restaurant $restaurant): self
-    {
-        $this->restaurant = $restaurant;
-
-        return $this;
-    }
-
     public function getDeliveryMan(): ?DeliveryMan
     {
         return $this->deliveryMan;
@@ -308,6 +274,23 @@ class User implements UserInterface
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getRestaurantManager(): ?RestaurantManager
+    {
+        return $this->restaurantManager;
+    }
+
+    public function setRestaurantManager(RestaurantManager $restaurantManager): self
+    {
+        $this->restaurantManager = $restaurantManager;
+
+        // set the owning side of the relation if necessary
+        if ($restaurantManager->getUser() !== $this) {
+            $restaurantManager->setUser($this);
+        }
 
         return $this;
     }

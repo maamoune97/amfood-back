@@ -32,7 +32,7 @@ class AppFixtures extends Fixture
     
     public function load(ObjectManager $manager)
     {
-        $faker = Factory::create();
+        $faker = Factory::create('fr_FR');
         $faker->addProvider(new Prices($faker));
 
         $islands = [
@@ -59,11 +59,11 @@ class AppFixtures extends Fixture
         $manager->persist($user);
         $users[] = $user;
 
-        for ($u=0; $u < 20 ; $u++) { 
+        for ($u=0; $u < 50 ; $u++) { 
             
             $user = new User();
             $user->setFullName($faker->firstName . ' ' . $faker->lastName)
-                 ->setPhone($faker->e164PhoneNumber)
+                 ->setPhone($faker->phoneNumber)
                  ->setEmail($faker->freeEmail)
                  ->setCreatedAt(new DateTime())
                  ->setPassword($passwordHash);

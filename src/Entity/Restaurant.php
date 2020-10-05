@@ -93,11 +93,6 @@ class Restaurant
     private $menu;
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="restaurant")
-     */
-    private $managers;
-
-    /**
      * @ORM\Column(type="string", length=100)
      * @Groups({"restaurants_subresource"})
      */
@@ -107,6 +102,11 @@ class Restaurant
      * @ORM\OneToMany(targetEntity=Order::class, mappedBy="restaurant")
      */
     private $orders;
+
+    /**
+     * @ORM\OneToOne(targetEntity=RestaurantManager::class, mappedBy="restaurant", cascade={"persist", "remove"})
+     */
+    private $manager;
     
     /**
      * @ORM\PrePersist
@@ -158,7 +158,6 @@ class Restaurant
     public function __construct()
     {
         $this->menus = new ArrayCollection();
-        $this->managers = new ArrayCollection();
         $this->orders = new ArrayCollection();
     }
 
@@ -264,37 +263,6 @@ class Restaurant
         return $this;
     }
 
-    /**
-     * @return Collection|User[]
-     */
-    public function getManagers(): Collection
-    {
-        return $this->managers;
-    }
-
-    public function addManagers(User $manager): self
-    {
-        if (!$this->managers->contains($manager)) {
-            $this->managers[] = $manager;
-            $manager->setRestaurant($this);
-        }
-
-        return $this;
-    }
-
-    public function removeManagers(User $manager): self
-    {
-        if ($this->managers->contains($manager)) {
-            $this->managers->removeElement($manager);
-            // set the owning side to null (unless already changed)
-            if ($manager->getRestaurant() === $this) {
-                $manager->setRestaurant(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getSpeciality(): ?string
     {
         return $this->speciality;
@@ -333,6 +301,23 @@ class Restaurant
             if ($order->getRestaurant() === $this) {
                 $order->setRestaurant(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getManager(): ?RestaurantManager
+    {
+        return $this->manager;
+    }
+
+    public function setManager(RestaurantManager $manager): self
+    {
+        $this->manager = $manager;
+
+        // set the owning side of the relation if necessary
+        if ($manager->getRestaurant() !== $this) {
+            $manager->setRestaurant($this);
         }
 
         return $this;
