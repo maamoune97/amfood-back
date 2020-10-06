@@ -107,6 +107,7 @@ class Restaurant
 
     /**
      * @ORM\OneToMany(targetEntity=Section::class, mappedBy="restaurant", orphanRemoval=true)
+     * @Groups({"restaurants_subresource", "restaurant_read"})
      */
     private $sections;
     
