@@ -19,6 +19,23 @@ class RestaurantManagerRepository extends ServiceEntityRepository
         parent::__construct($registry, RestaurantManager::class);
     }
 
+    /**
+     * @return RestaurantManager[] Returns an array of RestaurantManager objects
+     */
+    public function findAllSimplified()
+    {
+        return $this->createQueryBuilder('m')
+            ->select('m.id, m.createdAt, r.name as restaurant, u.fullName, u.phone, u.email, c.name as city')
+            ->groupBy('m.createdAt')
+            ->orderBy('m.createdAt', 'DESC')
+            ->join('m.user', 'u')
+            ->join('m.restaurant', 'r')
+            ->join('r.location', 'c')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return RestaurantManager[] Returns an array of RestaurantManager objects
     //  */

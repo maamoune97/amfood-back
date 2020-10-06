@@ -1,0 +1,90 @@
+{% extends "base.html.twig" %}
+{% block title %}Ajouter un Manager{% endblock %}
+
+{% block styles %}
+<style>
+    .avatar {
+        max-width: 200px;
+        /* max-height: 128px; */
+        height: auto;
+        border-radius: 15%;
+    }
+    .avatar-mini{
+        width: 150px;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <h1 class="h2">Restaurant {{restaurant.name | capitalize }}</h1>
+            <div class="row">
+                <div class="row">
+                    <div class="col">
+                        <img src="{{ asset("/media/images/uploads/restaurants/" ~ restaurant.imageLogo) }}"
+                            alt="bannière du {{restaurant.name}}" class="img-fluid img-thumbnail" style="max-width: 400px;" />
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col">
+                        <h3 class="h4">{{restaurant.location.island.name}} - {{restaurant.location.name}}</h3>
+                        <h3 class="h4"></h3>
+                        <h3 class="h4">Manager Actuelle: {{restaurant.manager ? restaurant.manager.user.fullName : 'Aucun'}}</h3>
+                        <h3 class="h4">En ligne: {{restaurant.activate ? 'Oui' : 'Non'}}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <h1 class="h2">verification du compte utilisateur</h1>
+            {{form_start(searchUserform)}}
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    {{form_widget(searchUserform.phone)}}
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Verifier le numéro</button>
+                    </div>
+                </div>
+            </div>
+            {{form_end(searchUserform)}}
+            
+            {% if user %}
+                <h2 class="h3">Compte trouvé <i class="fas fa-check text-success"></i></h2>
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                        <img src="/media/images/uploads/users/parker.jpg" class="img-fluid avatar avatar-mini" alt="Avatar de {{user.fullName}}">
+                    </div>
+                    <div class="col">
+                        <h3 class="h4">Details du compte</h3>
+                        <h4 class="h5">Nom complet: {{user.fullName}} </h4>
+                        <h4 class="h5">Téléphone: {{user.phone}} </h4>
+                        <h4 class="h5">Adresse mail: {{user.email}} </h4>
+                        <h4 class="h5">Inscrit le: {{user.createdAt | date("m/d/Y H:i") }} </h4>
+                        <h4 class="h5">Déjà livreur: {{user.deliveryMan ? 'Oui' : 'non'}} </h4>
+                        <h4 class="h5">Déjà manager d'un restaurant: {{user.restaurantManager ? user.restaurantManager.restaurant.name : 'non'}}</h4>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col">
+                        <h2>Promouvoir Manager</h2>
+                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cum porro, expedita eius excepturi id esse error repellat aut sed maiores, vel quaerat iste accusantium unde dolor? Esse animi in suscipit!</p>
+                        {{form_start(restaurantManagerform)}}
+                        {{form_widget(restaurantManagerform.userphone, {'attr' : {'value': user.phone}})}}
+                        <button class="btn btn-primary" type="submit">Promouvoir</button>
+                        {{form_end(restaurantManagerform)}}
+                    </div>
+                </div>
+            {% else %}
+                {% if tryToFind %}
+                    <h2 class="h3">Aucun compte trouvé <i class="fas fa-ban text-danger"></i></h2>
+                {% endif %}
+            {% endif %}
+
+        </div>                
+    </div>
+</div>
+{% endblock body %}

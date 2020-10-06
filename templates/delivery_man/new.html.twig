@@ -29,7 +29,7 @@
                     <h3 class="h5">Adresse mail: {{user.email}} </h3>
                     <h3 class="h5">Inscrit le: {{user.createdAt | date("m/d/Y H:i") }} </h3>
                     <h3 class="h5">Livreur: {{user.deliveryMan ? 'Oui' : 'non'}} </h3>
-                    <!-- <h3 class="h5">Manageur de restaurant: <span id="account-manager"></span></h3> -->
+                    <h3 class="h5">Manageur de restaurant: {{user.restaurantManager ? user.restaurantManager.restaurant.name : 'non'}}</h3>
                 </div>
                 <div class="col-12 col-md-4">
                     <h2 class="h4">Inscrire livreur</h2>

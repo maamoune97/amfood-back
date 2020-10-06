@@ -97,11 +97,6 @@ class RestaurantController extends AbstractController
                 
             $restaurant->setImageLogo($imageLogoName);
 
-            foreach ($restaurant->getManagers() as $manager) {
-                $manager->setRestaurant($restaurant);
-                $this->manager->persist($manager);
-            }
-
             $this->manager->persist($restaurant);
             $this->manager->flush();
             
@@ -165,11 +160,6 @@ class RestaurantController extends AbstractController
             foreach ($users as $user) {
                 $user->setRestaurant(null);
                 $this->manager->persist($user);
-            }
-
-            foreach ($restaurant->getManagers() as $manager) {
-                $manager->setRestaurant($restaurant);
-                $this->manager->persist($manager);
             }
 
             $this->manager->persist($restaurant);

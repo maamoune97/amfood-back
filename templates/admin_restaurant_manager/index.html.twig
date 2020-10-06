@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Managers restaurant{% endblock %}
+
+{% block styles %}
+<style>
+    .avatar {
+        max-width: 128px;
+        max-height: 128px;
+        border-radius: 15%;
+    }
+    .avatar-mini{
+        width: 58px;
+        height: 58px;
+    }
+</style>
+{% endblock %}
+{% block body %}
+    <div class="container-fluid">
+        {# <div class="text-right mb-2">
+            <a href="{{path('admin_restaurant_manager_new')}}" class="btn btn-primary"><i class="fas fa-plus fa-lg"></i> Nouveau Manager</a>
+        </div> #}
+        <h1>Les Managers</h1>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Nom</th>
+                    <th>ville</th>
+                    <th>Restaurant</th>
+                    <th>Téléphone</th>
+                    <th>Email</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for manager in managers %}
+                    <tr class="align-middle">
+                        <td><img src="http://lorempixel.com/400/200/people/" alt="avatar de ..." srcset="" class="img-fluid avatar avatar-mini"></td>
+                        <td>{{manager.fullName}}</td>
+                        <td>{{manager.city}}</td>
+                        <td>{{manager.restaurant}}</td>
+                        <td>{{manager.phone}}</td>
+                        <td>{{manager.email}}</td>
+                        <td>
+                            <a href="{{path('admin_restaurant_manager_show', {'id': manager.id})}} " title="Voir" class="btn btn-outline-primary btn-sm mr-3"><i class="fas fa-eye fa-lg"></i></a>
+                            <a href="#" title="Bloquer" class="btn btn-outline-danger btn-sm"><i class="fas fa-lg fa-ban"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+{% endblock %}

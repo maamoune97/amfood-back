@@ -23,9 +23,10 @@
                 <h2 class="h4">Spécialitées: {{restaurant.speciality}}</h2>
                 <h2 class="h4">Téléphone: {{restaurant.phone}}</h2>
                 <h2 class="h4">Email: <a href="mailto:{{restaurant.email}}">{{restaurant.email}}</a></h2>
-                <h2 class="h4">Managers: {{restaurant.managers | length}}</h2>
+                <h2 class="h4">Manager: {{restaurant.manager ?  restaurant.manager.user.fullName : 'Pas encore' }}</h2>
                 <h2 class="h4">En ligne: {{restaurant.activate ? 'Oui' : 'Non'}}</h2>
                 <a href="{{path('restaurant_edit', {'id': restaurant.id})}}" class="btn btn-primary">Editer</a>
+                <a href="{{path('admin_restaurant_manager_new', {'restaurant': restaurant.id})}}" class="btn btn-primary">Ajouter Manager</a>
         </div>
     </div>
     <h1 >Apropos du Menu</h1>
