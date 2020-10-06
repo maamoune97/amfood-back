@@ -1,7 +1,7 @@
 {% extends "base.html.twig" %}
 
 {% block title %}Séction - {{section.name}}{% endblock %}
-{% set restaurant = section.menu.restaurant %}
+{% set restaurant = section.restaurant %}
 {% block body %}
 <div class="container">
     {% include "partials/flashes.html.twig" %}

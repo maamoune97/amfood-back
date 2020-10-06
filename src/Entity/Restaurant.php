@@ -90,12 +90,6 @@ class Restaurant
     private $createdAt;
 
     /**
-     * @ORM\OneToOne(targetEntity=Menu::class, inversedBy="restaurant", cascade={"persist", "remove"})
-     * @Groups({"restaurants_subresource", "restaurant_read"})
-     */
-    private $menu;
-
-    /**
      * @ORM\Column(type="string", length=100)
      * @Groups({"restaurants_subresource", "restaurant_read"})
      */
@@ -110,6 +104,11 @@ class Restaurant
      * @ORM\OneToOne(targetEntity=RestaurantManager::class, mappedBy="restaurant", cascade={"persist", "remove"})
      */
     private $manager;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Section::class, mappedBy="restaurant", orphanRemoval=true)
+     */
+    private $sections;
     
     /**
      * @ORM\PrePersist
@@ -132,19 +131,6 @@ class Restaurant
     }
 
     /**
-     * @ORM\PrePersist
-     *
-     * @return void
-     */
-    public function initializeMenu()
-    {
-        if (!$this->getMenu())
-        {
-            $this->setMenu(new Menu());
-        }
-    }
-
-    /**
      * get stars average
      *@Groups({"restaurants_subresource", "restaurant_read"})
      * @return float
@@ -162,6 +148,7 @@ class Restaurant
     {
         $this->menus = new ArrayCollection();
         $this->orders = new ArrayCollection();
+        $this->sections = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -254,18 +241,6 @@ class Restaurant
         return $this;
     }
 
-    public function getMenu(): ?Menu
-    {
-        return $this->menu;
-    }
-
-    public function setMenu(?Menu $menu): self
-    {
-        $this->menu = $menu;
-
-        return $this;
-    }
-
     public function getSpeciality(): ?string
     {
         return $this->speciality;
@@ -321,6 +296,37 @@ class Restaurant
         // set the owning side of the relation if necessary
         if ($manager->getRestaurant() !== $this) {
             $manager->setRestaurant($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Section[]
+     */
+    public function getSections(): Collection
+    {
+        return $this->sections;
+    }
+
+    public function addSection(Section $section): self
+    {
+        if (!$this->sections->contains($section)) {
+            $this->sections[] = $section;
+            $section->setRestaurant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSection(Section $section): self
+    {
+        if ($this->sections->contains($section)) {
+            $this->sections->removeElement($section);
+            // set the owning side to null (unless already changed)
+            if ($section->getRestaurant() === $this) {
+                $section->setRestaurant(null);
+            }
         }
 
         return $this;

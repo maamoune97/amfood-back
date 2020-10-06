@@ -9,13 +9,6 @@
 {% block body %}
 <div class="container">
     <h1>créer un réstaurant</h1>
-    {% include "restaurant/_formRestaurant.html.twig" with {'submitBtnLabel': "créer un réstaurant"}  %}
+    {% include "restaurant/_formRestaurant.html.twig" with {'submitBtnLabel': "créer le réstaurant"}  %}
 </div>
 {% endblock %}
-
-{% block javascripts %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous"></script>
-<script>
-    $('select').select2();
-</script>
-{% endblock javascripts %}

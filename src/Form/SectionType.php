@@ -24,7 +24,7 @@ class SectionType extends AbstractType
             ])
             ->add('status',CheckboxType::class, [
                 'label' => 'En ligne',
-                'help' => 'faire apparaitre la section sur le menu dans l\'application',
+                'help' => 'afficher la section sur le restaurant dans l\'application',
                 'required' => false,
             ])
             ->add('image', FileType::class, [

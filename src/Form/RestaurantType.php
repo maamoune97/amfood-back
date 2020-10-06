@@ -45,7 +45,6 @@ class RestaurantType extends AbstractType
             ])
             ->add('activate', CheckboxType::class, [
                 'label' => 'En ligne (visible sur l\'application)',
-                'help' => 'Le réstaurant doit posseder un menu pour pouvoir être visible',
                 'required' => false,
                 'attr' => [
 
@@ -90,31 +89,6 @@ class RestaurantType extends AbstractType
             ])
             ->add('speciality', TextType::class, [
                 'label' => "spécialitées du réstaurant"
-            ])
-            ->add('managers',EntityType::class, [
-                'class' => User::class,
-                // 'query_builder' => function (UserRepository $ur) {
-                //     return $ur->createQueryBuilder('u')
-                //         ->where('u.restaurant IS NULL')
-                //         // ->setParameter('restaurant', null)
-                //         ->orderBy('u.fullName', 'ASC');
-                // },
-                'choice_label' => function($user){
-                    return $user->getFullName().' ('.$user->getPhone().')';
-                },
-                // 'group_by' => function($choice) {
-                //     foreach ($this->islands as $island) {
-
-                //         if ($choice->getIsland() == $island) {
-                //             return $island->getName();
-                //         }
-                
-                //     }
-                // },
-                'multiple' => true,
-                'label' => 'Managers',
-                'required' => false,
-                
             ])
         ;
     }

@@ -31,32 +31,30 @@
     </div>
     <h1 >Apropos du Menu</h1>
     <div class="btnAddContent mb-4">
-        <a href="{{path('section_new', {'id' : restaurant.menu.id})}}" id="addPart">
+        <a href="{{path('section_new', {'id' : restaurant.id})}}" id="addPart">
             <i class="fas fa-plus mr-2"></i>Ajouter une Séction
         </a>
     </div>
     <div class="row">
-        {% if restaurant.menu.sections | length > 0 %}
-            {% for section in restaurant.menu.sections %}
-                <div class="col-12 col-md-4 mb-4">
-                    <div class="card" style="width: 18rem;">
-                        <img src="{{ asset("/media/images/uploads/sections/" ~ section.image)}}" class="card-img-top resize" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">{{section.name}}</h5>
-                            <ul class="list-group list-group-flush">
-                                {% for article in section.articles %}
-                                    <li class="list-group-item">{{article.name}} <span class="float-right font-weight-bold" >{{article.price | number_format('0', ',', ' ')}} Fc</span></li>
-                                {% endfor %}
-                            </ul>
-                            <a href="{{path('section_show', {'id': section.id})}}" class="btn btn-primary btn-sm">Voir</a>
-                            <a href="{{path('section_delete', {'id':section.id})}}" class="btn btn-danger float-right btn-sm">Supprimer</a>
-                        </div>
+        {% for section in restaurant.sections %}
+            <div class="col-12 col-md-4 mb-4">
+                <div class="card" style="width: 18rem;">
+                    <img src="{{ asset("/media/images/uploads/sections/" ~ section.image)}}" class="card-img-top resize" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{section.name}}</h5>
+                        <ul class="list-group list-group-flush">
+                            {% for article in section.articles %}
+                                <li class="list-group-item">{{article.name}} <span class="float-right font-weight-bold" >{{article.price | number_format('0', ',', ' ')}} Fc</span></li>
+                            {% endfor %}
+                        </ul>
+                        <a href="{{path('section_show', {'id': section.id})}}" class="btn btn-primary btn-sm">Voir</a>
+                        <a href="{{path('section_delete', {'id':section.id})}}" class="btn btn-danger float-right btn-sm">Supprimer</a>
                     </div>
                 </div>
-            {% endfor %}
+            </div>
         {% else %}
             <p>Aucune séction disponible</p>
-        {% endif %}
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

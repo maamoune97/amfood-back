@@ -70,6 +70,7 @@ class Article
 
     /**
      * @ORM\OneToMany(targetEntity=Option::class, mappedBy="article", orphanRemoval=true)
+     * @Groups({"restaurants_subresource", "restaurant_read"})
      */
     private $options;
 

@@ -101,18 +101,12 @@ class AppFixtures extends Fixture
                     
                     $manager->persist($restaurant);
 
-                    $menu = new Menu();
-                    $menu->setRestaurant($restaurant)
-                         ;
-                    
-                    $manager->persist($menu);
-
                     for ($s=0; $s < mt_rand(3, 6); $s++)
                     { 
                         $section = new Section();
                         $section->setName($faker->words(mt_rand(1,4), true))
-                                ->setImage($faker->imageUrl(640, 480, 'food'))
-                                ->setMenu($menu)
+                                ->setImage('default.jpg')
+                                ->setRestaurant($restaurant)
                                 ;
                         $manager->persist($section);
 
@@ -127,7 +121,7 @@ class AppFixtures extends Fixture
                             $article = new Article();
                             $article->setName($faker->words(mt_rand(1, 4), true))
                                     ->setPrice($faker->price(1000, 5000, false, false))
-                                    // ->setPrice($faker->rand(2, 200))
+                                    ->setImage('default.jpg')
                                     ->setIngredient(implode(' , ', $ingredient))
                                     ->setSection($section)
                                     ;

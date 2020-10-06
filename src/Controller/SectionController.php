@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Menu;
+use App\Entity\Restaurant;
 use App\Entity\Section;
 use App\Form\SectionType;
 use App\Service\FileUploader;
@@ -32,17 +33,17 @@ class SectionController extends AbstractController
     /**
      * Create new section
      * 
-     * @Route("/new/menu/{id}/", name="new")
+     * @Route("/new/restaurant/{id}/", name="new")
      * 
-     * @param Menu $menu
+     * @param Restaurant $restaurant
      * @param Request $request
      * @return Response
      */
-    public function new(Menu $menu, Request $request)
+    public function new(Restaurant $restaurant, Request $request)
     {
         
         $section = new Section();
-        $section->setMenu($menu);
+        $section->setRestaurant($restaurant);
                 
         $form = $this->createForm(SectionType::class, $section);
         $form->handleRequest($request);
@@ -65,10 +66,10 @@ class SectionController extends AbstractController
             
             $this->addFlash('success','Nouveau séction créer avec succès');
 
-            return $this->redirectToRoute('restaurant_show', ['id' => $menu->getRestaurant()->getId()]);
+            return $this->redirectToRoute('restaurant_show', ['id' => $restaurant->getId()]);
         }
         
-        return $this->render('section/createUpdate.html.twig', [
+        return $this->render('section/new.html.twig', [
             'form'  =>  $form->createView(),
 
         ]);
@@ -99,7 +100,7 @@ class SectionController extends AbstractController
         $this->manager->flush();
         $this->addFlash('success','Section '. $section->getName() .' supprimer avec succès');
         return $this->redirectToRoute('restaurant_show', [
-            'id' => $section->getMenu()->getRestaurant()->getId(),
+            'id' => $section->getRestaurant()->getId(),
         ]);
     }
 
@@ -147,10 +148,10 @@ class SectionController extends AbstractController
             
             $this->addFlash('success','Séction '. $section->getName() .' modifier avec succès');
 
-            return $this->redirectToRoute('restaurant_show', ['id' => $section->getMenu()->getRestaurant()->getId()]);
+            return $this->redirectToRoute('restaurant_show', ['id' => $section->getRestaurant()->getId()]);
         }
         
-        return $this->render('section/createUpdate.html.twig', [
+        return $this->render('section/edit.html.twig', [
             'form'  =>  $form->createView(),
 
         ]);

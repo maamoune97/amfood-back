@@ -17,9 +17,9 @@ use Symfony\Component\Filesystem\Filesystem;
  * @ORM\Entity(repositoryClass=SectionRepository::class)
  * @HasLifecycleCallbacks()
  * @UniqueEntity(
- *     fields={"name", "menu"},
+ *     fields={"name", "restaurant"},
  *     errorPath="name",
- *     message="ce menu possède déjà une séction avec ce nom"
+ *     message="ce restaurant possède déjà une séction avec ce nom"
  * )
  * @ApiResource(
  * collectionOperations={"get"},
@@ -44,12 +44,6 @@ class Section
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Menu::class, inversedBy="sections")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $menu;
-
-    /**
      * @ORM\Column(type="boolean", options={"default": true})
      * @Groups({"restaurants_subresource"})
      */
@@ -66,6 +60,12 @@ class Section
      * @Groups({"restaurants_subresource", "restaurant_read"})
      */
     private $image;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Restaurant::class, inversedBy="sections")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $restaurant;
 
 
     /**
@@ -108,18 +108,6 @@ class Section
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getMenu(): ?Menu
-    {
-        return $this->menu;
-    }
-
-    public function setMenu(?Menu $menu): self
-    {
-        $this->menu = $menu;
 
         return $this;
     }
@@ -175,6 +163,18 @@ class Section
     public function setImage(?string $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getRestaurant(): ?Restaurant
+    {
+        return $this->restaurant;
+    }
+
+    public function setRestaurant(?Restaurant $restaurant): self
+    {
+        $this->restaurant = $restaurant;
 
         return $this;
     }

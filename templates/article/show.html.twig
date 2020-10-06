@@ -7,7 +7,7 @@
     {% include "partials/flashes.html.twig" %}
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{path('restaurant_index')}}">Restaurants</a></li>
-        <li class="breadcrumb-item"><a href="{{path('restaurant_show', {'id': section.menu.restaurant.id})}}">{{section.menu.restaurant.name}}</a></li>
+        <li class="breadcrumb-item"><a href="{{path('restaurant_show', {'id': section.restaurant.id})}}">{{section.restaurant.name}}</a></li>
         <li class="breadcrumb-item"><a href="{{path('section_show', {'id': section.id})}}">{{section.name}}</a></li>
         <li class="breadcrumb-item active">{{article.name}}</li>
       </ol>
