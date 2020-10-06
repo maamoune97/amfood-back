@@ -20,6 +20,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity("phone", message="ce numéro est déjà associé à un autre restaurant")
  * @UniqueEntity("name", message="ce réstaurant est déjà enregistré")
  * @ApiResource(
+ * normalizationContext = {
+ *  "groups" = {"restaurant_read"}
+ * },
  * collectionOperations={"get"},
  * itemOperations={"get"},
  * subresourceOperations={"api_cities_restaurants_get_subresource" = {
@@ -34,13 +37,13 @@ class Restaurant
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"restaurants_subresource"})
+     * @Groups({"restaurants_subresource", "restaurant_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Groups({"restaurants_subresource"})
+     * @Groups({"restaurants_subresource", "restaurant_read"})
      * @Assert\NotBlank(message="le nom du réstaurant est obligatoire!")
      * 
      */
@@ -54,7 +57,7 @@ class Restaurant
 
     /**
      * @ORM\Column(type="string", length=20)
-     * @Groups({"restaurants_subresource"})
+     * @Groups({"restaurants_subresource", "restaurant_read"})
      * @Assert\NotBlank(message="le numéro de téléphone du réstaurant est obligatoire!")
      * 
      */
@@ -62,7 +65,7 @@ class Restaurant
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"restaurants_subresource"})
+     * @Groups({"restaurants_subresource", "restaurant_read"})
      * * @Assert\Email(
      *     message = "Entrez un adresse email valide!"
      * )
@@ -76,7 +79,7 @@ class Restaurant
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"restaurants_subresource"})
+     * @Groups({"restaurants_subresource", "restaurant_read"})
      *
      */
     private $imageLogo;
@@ -88,13 +91,13 @@ class Restaurant
 
     /**
      * @ORM\OneToOne(targetEntity=Menu::class, inversedBy="restaurant", cascade={"persist", "remove"})
-     * @Groups({"restaurants_subresource"})
+     * @Groups({"restaurants_subresource", "restaurant_read"})
      */
     private $menu;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Groups({"restaurants_subresource"})
+     * @Groups({"restaurants_subresource", "restaurant_read"})
      */
     private $speciality;
 
@@ -143,7 +146,7 @@ class Restaurant
 
     /**
      * get stars average
-     *@Groups({"restaurants_subresource"})
+     *@Groups({"restaurants_subresource", "restaurant_read"})
      * @return float
      */
     public function getAvgStars() : float

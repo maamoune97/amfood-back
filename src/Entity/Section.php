@@ -32,13 +32,13 @@ class Section
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"restaurants_subresource"})
+     * @Groups({"restaurants_subresource", "restaurant_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"restaurants_subresource"})
+     * @Groups({"restaurants_subresource", "restaurant_read"})
      * @Assert\NotNull(message="Entrez le nom de la séction")
      */
     private $name;
@@ -57,13 +57,13 @@ class Section
 
     /**
      * @ORM\OneToMany(targetEntity=Article::class, mappedBy="section", orphanRemoval=true)
-     * @Groups({"restaurants_subresource"})
+     * @Groups({"restaurants_subresource", "restaurant_read"})
      */
     private $articles;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"restaurants_subresource"})
+     * @Groups({"restaurants_subresource", "restaurant_read"})
      */
     private $image;
 

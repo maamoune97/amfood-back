@@ -22,14 +22,14 @@ class Menu
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"restaurants_subresource"})
+     * @Groups({"restaurants_subresource", "restaurant_read"})
      */
     private $id;
 
 
     /**
      * @ORM\OneToMany(targetEntity=Section::class, mappedBy="menu", orphanRemoval=true)
-     * @Groups({"restaurants_subresource"})
+     * @Groups({"restaurants_subresource", "restaurant_read"})
      */
     private $sections;
 

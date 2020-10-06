@@ -32,26 +32,26 @@ class Article
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"restaurants_subresource", "orderWrite"})
+     * @Groups({"restaurants_subresource", "orderWrite", "restaurant_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"restaurants_subresource"})
+     * @Groups({"restaurants_subresource", "restaurant_read"})
      * @Assert\NotNull(message ="Entrez le nom de l'article")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=500, nullable=true)
-     * @Groups({"restaurants_subresource"})
+     * @Groups({"restaurants_subresource", "restaurant_read"})
      */
     private $ingredient;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"restaurants_subresource"})
+     * @Groups({"restaurants_subresource", "restaurant_read"})
      * @Assert\NotNull(message ="Entrez le prix de l'article")
      */
     private $price;
@@ -64,7 +64,7 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"restaurants_subresource"})
+     * @Groups({"restaurants_subresource", "restaurant_read"})
      */
     private $image;
 
