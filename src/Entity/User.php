@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use DateTime;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -78,6 +79,20 @@ class User implements UserInterface
      * @ORM\OneToOne(targetEntity=RestaurantManager::class, mappedBy="user", cascade={"persist", "remove"})
      */
     private $restaurantManager;
+
+
+    /**
+     * @ORM\PrePersist
+     *
+     * @return void
+     */
+    public function initializeCreatedAt()
+    {
+        if (!$this->getCreatedAt())
+        {
+            $this->setCreatedAt(new DateTime());
+        }
+    }
 
     public function __construct()
     {
