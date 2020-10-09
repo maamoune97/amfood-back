@@ -74,6 +74,7 @@ class Restaurant
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"restaurants_subresource", "restaurant_read"})
      */
     private $activate;
 
@@ -107,7 +108,7 @@ class Restaurant
 
     /**
      * @ORM\OneToMany(targetEntity=Section::class, mappedBy="restaurant", orphanRemoval=true)
-     * @Groups({"restaurants_subresource", "restaurant_read"})
+     * @Groups({"restaurant_read"})
      */
     private $sections;
     

@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\OptionRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\OptionRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=OptionRepository::class)
@@ -22,16 +23,19 @@ class Option
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"article_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Groups({"article_read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Groups({"article_read"})
      */
     private $type;
 
@@ -43,6 +47,7 @@ class Option
 
     /**
      * @ORM\OneToMany(targetEntity=OptionField::class, mappedBy="myOption", orphanRemoval=true)
+     * @Groups({"article_read"})
      */
     private $optionFields;
 

@@ -11,9 +11,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=OptionFieldRepository::class)
- * @ApiResource(
- * normalizationContext={"groups"={"option_field_read"}}
- * )
  */
 class OptionField
 {
@@ -21,26 +18,25 @@ class OptionField
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"orderWrite", "option_field_read"})
+     * @Groups({"orderWrite", "article_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"option_field_read"})
+     * @Groups({"article_read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"option_field_read"})
+     * @Groups({"article_read"})
      */
     private $additionalPrice;
 
     /**
      * @ORM\ManyToOne(targetEntity=Option::class, inversedBy="optionFields")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"option_field_read"})
      */
     private $myOption;
 

@@ -32,32 +32,32 @@ class Section
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"restaurants_subresource", "restaurant_read"})
+     * @Groups({"restaurant_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"restaurants_subresource", "restaurant_read"})
+     * @Groups({"restaurant_read"})
      * @Assert\NotNull(message="Entrez le nom de la séction")
      */
     private $name;
 
     /**
      * @ORM\Column(type="boolean", options={"default": true})
-     * @Groups({"restaurants_subresource"})
+     * @Groups({"restaurant_read"})
      */
     private $status;
 
     /**
      * @ORM\OneToMany(targetEntity=Article::class, mappedBy="section", orphanRemoval=true)
-     * @Groups({"restaurants_subresource", "restaurant_read"})
+     * @Groups({"restaurant_read"})
      */
     private $articles;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"restaurants_subresource", "restaurant_read"})
+     * @Groups({"restaurant_read"})
      */
     private $image;
 
