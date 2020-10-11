@@ -82,6 +82,17 @@ class Article
      */
     private $orderArticlePacks;
 
+
+    /**
+     * @Groups({"article_read"})
+     *
+     * @return string
+     */
+    public function getRestaurantName()
+    {
+        return $this->getSection()->getRestaurant()->getName();
+    }
+
     /**
      * Remove automaticaly image File when Article was removed
      *@ORM\PostRemove
