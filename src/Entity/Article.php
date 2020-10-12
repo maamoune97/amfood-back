@@ -3,15 +3,16 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OrderBy;
 use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Filesystem\Filesystem;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
@@ -74,6 +75,7 @@ class Article
     /**
      * @ORM\OneToMany(targetEntity=Option::class, mappedBy="article", orphanRemoval=true)
      * @Groups({"article_read"})
+     * @OrderBy({"type" = "DESC"})
      */
     private $options;
 
