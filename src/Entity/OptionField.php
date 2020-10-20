@@ -18,19 +18,19 @@ class OptionField
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"orderWrite", "article_read"})
+     * @Groups({"orderWrite", "article_read", "user_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"article_read"})
+     * @Groups({"article_read", "user_read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"article_read"})
+     * @Groups({"article_read", "user_read"})
      */
     private $additionalPrice;
 

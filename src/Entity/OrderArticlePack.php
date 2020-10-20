@@ -19,20 +19,20 @@ class OrderArticlePack
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"orderWrite"})
+     * @Groups({"orderWrite", "user_read"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Article::class, inversedBy="orderArticlePacks")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"orderWrite"})
+     * @Groups({"orderWrite", "user_read"})
      */
     private $article;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"orderWrite"})
+     * @Groups({"orderWrite", "user_read"})
      */
     private $quantity;
 
@@ -44,7 +44,7 @@ class OrderArticlePack
 
     /**
      * @ORM\ManyToOne(targetEntity=OptionField::class, inversedBy="orderArticlePacks")
-     * @Groups({"orderWrite"})
+     * @Groups({"orderWrite", "user_read"})
      */
     private $optionField;
 
