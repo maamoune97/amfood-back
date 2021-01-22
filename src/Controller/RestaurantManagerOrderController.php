@@ -30,13 +30,23 @@ class RestaurantManagerOrderController extends AbstractController
     }
 
     /**
+     * @Route("/command", name="command")
+     */
+    public function command(MercureCookieGenerator $cookieGenerator)
+    {
+        return $this->render('restaurant_manager/order/command.html.twig', [
+            
+        ]);
+    }
+
+    /**
      * @Route("/check/{user}", name="check", methods={"POST"})
      */
     public function checkUsers(MessageBusInterface $bus, ?User $user = null)
     {
         // $target = $user !== null ? ["http://monsite.com/restaurant/{$user->getId()}"] : [];
 
-        $update = new Update("http://monsite.com/restaurant/", "[]", true);
+        $update = new Update("http://monsite.com/restaurant", "[]", true);
 
         $bus->dispatch($update);
         return new Response('event published');

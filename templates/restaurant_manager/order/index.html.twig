@@ -8,10 +8,10 @@
         cursor: pointer;
     }
 </style>
-<div class="container-fluid">
+<div class="container-fluid mt-4">
     <div class="row">
         <div class="col-md-3">
-            <h1 class="text-center h2">En attente (4)</h1>
+            <h1 class="text-center h2">En attente (<span id="orderCount">0</span>)</h1>
             <!-- <ul class="waiting"> -->
                 {% for i in 1..1 %}
                     <!-- <li> -->
@@ -62,42 +62,85 @@
         </div>
         <div class="col-md-3">
             <h1 class="text-center h2 ">En préparation (0)</h1>
-            <form action="{{path('restaurant_manager_order_check', {'user' : '131'})}} " method="POST">
-                <button class="btn btn-primary">Check users</button>
-            </form>
+            <button class="btn btn-primary" id="mercurePost" type="button">Mercure</button>
         </div>
     </div>
+    <div id="user-rating" data-user="{{app.user ? app.user.id : false}}"></div>
 </div>
 {% endblock %}
 
 {% block javascripts %}
 <script>
-const url = new URL('http://localhost:3000/hub');
-url.searchParams.append('topic', 'http://monsite.com/restaurant/');
 
-const eventSource = new EventSource(url, {withCredentials: true});
+const counter = +$('div.show-order').length
+$('#orderCount').text(counter);
+
+//*********************************************************
+
+$('#mercurePost').click(function(){
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZXJjdXJlIjp7InB1Ymxpc2giOlsiKiJdfX0.qDw5qWrEI4C8fD5x8mQsW9t8kLlgzqLiM79qJ_sdCaY");
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+    var urlencoded = new URLSearchParams();
+    urlencoded.append("topic", "http://monsite.com/restaurant");
+    urlencoded.append("data", "{\"id\": 310\n, \"number\": \"AL54M2\", \"message\": \"ok\"}");
+
+    var requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: urlencoded,
+    redirect: 'follow'
+    };
+
+    fetch("http://localhost:3000/hub", requestOptions)
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
+})
+//*********************************************************
+
+const isAuthenticated = $('#user-rating').data('user')
+const url = new URL('http://localhost:3000/hub');
+url.searchParams.append('topic', 'http://monsite.com/restaurant');
+
+const eventSource = new EventSource(url);
 
 // const newCommandNotificationAudio = new Audio('../../../public/swiftly.ogg')
 
 // The callback will be called every time an update is published
 eventSource.onmessage = e => {
-    let card = `<div class="card show-order mb-4" style="width: 18rem;">
-                    <div class="card-header">
-                        002
-                    </div>
-                    <ul class="list-group list-group-flush">
-                    <li class="list-group-item">1x Menu big tasty</li>
-                    <li class="list-group-item">1x Mc fleury</li>
-                    </ul>
-                    <div class="card-footer">
-                        <span class="float-right text-danger">28-07-20 15h:45</span>
-                    </div>
-                </div>`;
-    const cards = document.querySelectorAll('.show-order');
-    const lastCard = cards[cards.length -1];
-    lastCard.insertAdjacentHTML('afterend', card);
-    // newCommandNotificationAudio.play();
-    console.log(e);
+
+    let orderInfo = JSON.parse(e.data);
+
+    console.log(orderInfo);
+    if (orderInfo.id == isAuthenticated)
+    {
+        //incrementer le nombre(chiffre) de commande en attente
+        let orderCount = +$('#orderCount').text();
+        orderCount ++;
+        $('#orderCount').text(orderCount);
+
+        let card = `<div class="card show-order mb-4" style="width: 18rem;">
+                        <div class="card-header">
+                            ${orderInfo.number}
+                        </div>
+                        <ul class="list-group list-group-flush">
+                        <li class="list-group-item">1x Menu big tasty</li>
+                        <li class="list-group-item">1x Mc fleury</li>
+                        </ul>
+                        <div class="card-footer">
+                            <span class="float-right text-danger">28-07-20 15h:45</span>
+                        </div>
+                    </div>`;
+        const cards = document.querySelectorAll('.show-order');
+        const lastCard = cards[cards.length -1];
+        lastCard.insertAdjacentHTML('afterend', card);
+        // newCommandNotificationAudio.play();
+        console.log(e);
+    }
+    
+    
 } // do something with the payload
 </script>
 {% endblock %}
