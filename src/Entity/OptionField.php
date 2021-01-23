@@ -11,6 +11,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=OptionFieldRepository::class)
+ * @ApiResource(
+ * normalizationContext={"groups"={"option_field_read"}}
+ * )
  */
 class OptionField
 {
@@ -18,19 +21,19 @@ class OptionField
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"orderWrite", "article_read", "user_read"})
+     * @Groups({"orderWrite", "article_read", "user_read", "order_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"article_read", "user_read"})
+     * @Groups({"article_read", "user_read", "order_read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"article_read", "user_read"})
+     * @Groups({"article_read", "user_read", "order_read"})
      */
     private $additionalPrice;
 
@@ -41,7 +44,7 @@ class OptionField
     private $myOption;
 
     /**
-     * @ORM\OneToMany(targetEntity=OrderArticlePack::class, mappedBy="optionField")
+     * @ORM\ManyToMany(targetEntity=OrderArticlePack::class, mappedBy="optionFieldsTaken")
      */
     private $orderArticlePacks;
 
@@ -103,7 +106,7 @@ class OptionField
     {
         if (!$this->orderArticlePacks->contains($orderArticlePack)) {
             $this->orderArticlePacks[] = $orderArticlePack;
-            $orderArticlePack->setOptionField($this);
+            $orderArticlePack->addOptionFieldsTaken($this);
         }
 
         return $this;
@@ -113,10 +116,7 @@ class OptionField
     {
         if ($this->orderArticlePacks->contains($orderArticlePack)) {
             $this->orderArticlePacks->removeElement($orderArticlePack);
-            // set the owning side to null (unless already changed)
-            if ($orderArticlePack->getOptionField() === $this) {
-                $orderArticlePack->setOptionField(null);
-            }
+            $orderArticlePack->removeOptionFieldsTaken($this);
         }
 
         return $this;

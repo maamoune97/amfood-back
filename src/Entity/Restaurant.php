@@ -37,13 +37,13 @@ class Restaurant
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"restaurants_subresource", "restaurant_read"})
+     * @Groups({"restaurants_subresource", "restaurant_read", "orderWrite", "order_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Groups({"restaurants_subresource", "restaurant_read"})
+     * @Groups({"restaurants_subresource", "restaurant_read", "order_read"})
      * @Assert\NotBlank(message="le nom du réstaurant est obligatoire!")
      * 
      */
@@ -111,7 +111,7 @@ class Restaurant
      * @Groups({"restaurant_read"})
      */
     private $sections;
-    
+
     /**
      * @ORM\PrePersist
      *
@@ -137,15 +137,15 @@ class Restaurant
      *@Groups({"restaurants_subresource", "restaurant_read"})
      * @return float
      */
-    public function getAvgStars() : float
+    public function getAvgStars(): float
     {
-        $totalStars = array_reduce($this->getOrders()->toArray(), function($stars, $order){
+        $totalStars = array_reduce($this->getOrders()->toArray(), function ($stars, $order) {
             return $stars + $order->getRating()->getRestaurantStars();
         }, 0);
-        
+
         return round($totalStars / count($this->getOrders()), 1, PHP_ROUND_HALF_ODD);
     }
-    
+
     public function __construct()
     {
         $this->menus = new ArrayCollection();
@@ -333,5 +333,4 @@ class Restaurant
 
         return $this;
     }
-
 }

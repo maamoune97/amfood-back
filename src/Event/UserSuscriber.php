@@ -18,7 +18,7 @@ class UserSuscriber extends ParameterBag implements EventSubscriberInterface
     {
         $this->security = $security;
     }
-    public static function getSubscribedEvents() : array
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::VIEW => ['getCurrentUser', EventPriorities::PRE_SERIALIZE],
@@ -27,16 +27,15 @@ class UserSuscriber extends ParameterBag implements EventSubscriberInterface
 
     public function getCurrentUser(ViewEvent $event)
     {
+        //dd($event);
         $method = $event->getRequest()->getMethod();
-        $operationType = $event->getRequest()->attributes->parameters['_api_normalization_context']['operation_type'];
+        $operationType = $event->getRequest()->attributes->parameters['_api_normalization_context']['operation_type'] ?? false;
         $apiResourceClass = $event->getRequest()->attributes->parameters['_api_resource_class'];
-        
-        
-        if ($operationType === "collection" && $method === 'GET' &&  $apiResourceClass === User::class)
-        {
+
+
+        if ($operationType === "collection" && $method === 'GET' &&  $apiResourceClass === User::class) {
             $user = $this->security->getUser();
             $event->setControllerResult($user);
         }
     }
-
 }

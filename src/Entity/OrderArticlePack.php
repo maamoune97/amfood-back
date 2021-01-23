@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\OrderArticlePackRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -10,7 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=OrderArticlePackRepository::class)
  * @ApiResource(
- * normalizationContext={"groups"={"orderWrite"}}
+ * normalizationContext={"groups"={"order_article_pack_read"}}
  * )
  */
 class OrderArticlePack
@@ -19,20 +21,20 @@ class OrderArticlePack
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"orderWrite", "user_read"})
+     * @Groups({"orderWrite", "user_read", "order_read"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Article::class, inversedBy="orderArticlePacks")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"orderWrite", "user_read"})
+     * @Groups({"orderWrite", "user_read", "order_read"})
      */
     private $article;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"orderWrite", "user_read"})
+     * @Groups({"orderWrite", "user_read", "order_read"})
      */
     private $quantity;
 
@@ -43,10 +45,15 @@ class OrderArticlePack
     private $command;
 
     /**
-     * @ORM\ManyToOne(targetEntity=OptionField::class, inversedBy="orderArticlePacks")
-     * @Groups({"orderWrite", "user_read"})
+     * @ORM\ManyToMany(targetEntity=OptionField::class, inversedBy="orderArticlePacks")
+     * @Groups({"orderWrite", "user_read", "order_read"})
      */
-    private $optionField;
+    private $optionFieldsTaken;
+
+    public function __construct()
+    {
+        $this->optionFieldsTaken = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -89,14 +96,28 @@ class OrderArticlePack
         return $this;
     }
 
-    public function getOptionField(): ?OptionField
+    /**
+     * @return Collection|OptionField[]
+     */
+    public function getOptionFieldsTaken(): Collection
     {
-        return $this->optionField;
+        return $this->optionFieldsTaken;
     }
 
-    public function setOptionField(?OptionField $optionField): self
+    public function addOptionFieldsTaken(OptionField $optionFieldsTaken): self
     {
-        $this->optionField = $optionField;
+        if (!$this->optionFieldsTaken->contains($optionFieldsTaken)) {
+            $this->optionFieldsTaken[] = $optionFieldsTaken;
+        }
+
+        return $this;
+    }
+
+    public function removeOptionFieldsTaken(OptionField $optionFieldsTaken): self
+    {
+        if ($this->optionFieldsTaken->contains($optionFieldsTaken)) {
+            $this->optionFieldsTaken->removeElement($optionFieldsTaken);
+        }
 
         return $this;
     }

@@ -38,6 +38,7 @@ class OrderSubcriber implements EventSubscriberInterface
         {
             $order = $result;
             unset($result);
+            // dd($order);
 
             $order->setCustomer($this->security->getUser());
             $order->setCreatedAt(new DateTime());

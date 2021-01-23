@@ -13,7 +13,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity(repositoryClass=OrderRepository::class)
  * @ORM\Table(name="`order`")
  * @ApiResource(
- * denormalizationContext={"groups"={"orderWrite"}}
+ *  denormalizationContext={"groups"={"orderWrite"}},
+ *  normalizationContext={"groups"={"order_read"}}
  * )
  */
 class Order
@@ -22,25 +23,26 @@ class Order
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"user_read", "orderWrite"})
+     * @Groups({"user_read", "orderWrite", "order_read"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="orders")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"order_read", "order_read"})
      */
     private $customer;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"user_read", "orderWrite"})
+     * @Groups({"user_read", "orderWrite", "order_read"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="string", length=15)
-     * @Groups({"user_read", "orderWrite"})
+     * @Groups({"user_read", "orderWrite", "order_read"})
      */
     private $status;
 
@@ -56,13 +58,14 @@ class Order
 
     /**
      * @ORM\OneToMany(targetEntity=OrderArticlePack::class, mappedBy="command", orphanRemoval=true)
-     * @Groups({"user_read", "orderWrite"})
+     * @Groups({"user_read", "orderWrite", "order_read"})
      */
     private $orderArticlePacks;
 
     /**
      * @ORM\ManyToOne(targetEntity=Restaurant::class, inversedBy="orders")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"orderWrite", "order_read"})
      */
     private $restaurant;
 
