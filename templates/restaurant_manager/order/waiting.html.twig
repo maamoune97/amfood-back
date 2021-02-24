@@ -1,0 +1,190 @@
+{% extends "restaurant_manager/base.html.twig" %}
+
+{% block titie %}En attente
+{% endblock %}
+
+{% block body %}
+	<style>
+		body {
+			margin: 0;
+            padding: 0;
+		}
+        .grid{
+            height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 2fr 3fr;
+            grid-gap: 20px;
+        }
+
+        .sidebar{
+           
+        }
+
+        .orders{
+            /* background-color: cornflowerblue; */
+            overflow-y: auto;
+        }
+
+        .show{
+            /* background-color: deeppink; */
+            overflow-y: auto;
+        }
+
+		.sidenav {
+			height: 100%;
+			width: 160px;
+			position: fixed;
+			z-index: 1;
+			top: 56;
+			left: 0;
+			background-color: #111;
+			overflow-x: hidden;
+			padding-top: 20px;
+		}
+
+		.sidenav a {
+			padding: 6px 8px 6px 16px;
+			text-decoration: none;
+			font-size: 20px;
+			color: #818181;
+			display: block;
+		}
+
+		.sidenav a:hover {
+			color: #f1f1f1;
+		}
+
+		.main {
+			margin-left: 160px; /* Same as the width of the sidenav */
+			font-size: 15px; /* Increased text to enable scrolling */
+			padding: 0 10px;
+		}
+
+		@media screen and(max-height: 450px) {
+			.sidenav {
+				padding-top: 15px;
+			}
+			.sidenav a {
+				font-size: 18px;
+			}
+		}
+
+        .card-waiting{
+            cursor: pointer;
+        }
+	</style>
+
+    <div class="grid">
+        {% include "restaurant_manager/order/leftBarMenu.html.twig" %}
+        <div class="orders">
+            <h1 class="text-center h2 mb-3 mt-2">En attente</h1>
+            {% for order in orders %}
+                    <!-- <li> -->
+                        <div class="card show-order mb-4 card-waiting" data-id={{order.id}} style="width: auto;">
+                            <div class="card-header">
+                                {{order.id}}
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                {% for orderArticlePack in order.orderArticlePacks %}
+                                    <li class="list-group-item">{{orderArticlePack.quantity}}x {{orderArticlePack.article.name}}</li>
+                                {% endfor %}
+                            </ul>
+                            <div class="card-footer">
+                                <span class="float-right text-danger">{{order.createdAt | date('d-m-Y H:i')}}</span>
+                            </div>
+                        </div>
+                    <!-- </li> -->
+                {% endfor %}
+        </div>
+        <div class="show">
+            <h1 class="text-center h2 mb-3 mt-2">Aprecus</h1>
+            <div class="details d-none">
+            
+                <h2 class="h4">Numéro de commande: <span id="showCmdNum">x</span> <span class="float-right">Statut: en attente</span></h2>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Article</th>
+                            <th class="text-center">Qté</th>
+                            <th>Options</th>
+                            <th class="text-center">Prix</th>
+                        </tr>
+                    </thead>
+                    <tbody data-prototype='<tr><td>__article__</td><td class="text-center" >__quantity__</td><td>__options__</td><td class="text-center" >__price__</td></tr>'>
+                    </tbody>
+                </table>
+                <h2 class="h4 mt-4 mr-2">Total de la commande : <span class="float-right" id="showCmdPrice">7 500 Fc</span></h2>
+                <div class="d-flex justify-content-around">
+                    <button class="btn btn-danger" type="button">Refuser</button>
+                    <button class="btn btn-success" type="button">Accepter</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<script>
+        $(function(){
+
+            async function getCommand(id) {
+                return await axios.get(`/restaurant/manager/orders/${id}`).then(response => {
+                    return response;
+                }).catch(error => {
+                    return error;
+                });
+            }
+
+            //Recuperer les nouveau commandes de l'utilisateur courant 
+            $('#waitingOrders').click(async function (e) { 
+                console.log(await getCommand(115));
+            });
+
+            //Recuperer les commandes en cours de l'utilisateur courant 
+            $('#inPreparationOrders').click(function (e) { 
+                
+            });
+
+            //Recuperer les commandes terminé de l'utilisateur courant 
+            $('#finishedOrders').click(function (e) { 
+                
+            });
+
+            //Recuperer les details d'une commande en attente
+            $('.card-waiting').click(async function (e) {
+                $(".details").hide();
+                $(".details").removeClass('d-none');
+                const commandId = $(this).data("id");
+                const command = await getCommand(commandId);
+                console.log(command);
+                $('#showCmdNum').text(command.data.id)
+                $('#showCmdPrice').text(command.data.totalPrice+' Fc')
+
+                const trPrototype = $('.show tbody').data("prototype");
+
+                $('.show tbody').empty();
+                
+                command.data.articlePacks.forEach(articlePack => {
+                    
+                    // transfomation du array options en string si il y'en a
+                    let options = "";
+                    if (articlePack.options.length > 0) {
+                        articlePack.options.forEach(option => {
+                            options += option.optionName + ': ' + option.optionFieldName + ", ";
+                        })
+                        //suprimmer le dernier ', ' à la fin
+                        options = options.slice(0,-2)
+                    }
+
+                    //Affichage des articlesPacks
+                    let tr = trPrototype.replace(/__article__/g, articlePack.article).replace(/__quantity__/g, articlePack.quantity).replace(/__options__/g, options).replace(/__price__/g, articlePack.price+' Fc');
+                    $('.show tbody').append(tr);
+                })
+                //afficher la commande une fois tout récuper
+                $(".details").show();
+            })
+        });
+    </script>
+{% endblock %}

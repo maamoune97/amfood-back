@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 /**
  * @Route("/admin/restaurants", name="restaurant_")
@@ -172,5 +173,25 @@ class RestaurantController extends AbstractController
         return $this->render('restaurant/edit.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * Remove restaurant
+     *
+     * @Route("/remove/{id}", name="remove", methods={"POST"})
+     * 
+     * @param Restaurant $restaurant
+     * @param Request $request
+     * @return void
+     */
+    public function remove(Restaurant $restaurant) : Response
+    {
+        try {
+            $this->manager->remove($restaurant);
+            $this->manager->flush();
+            return $this->redirectToRoute('restaurant_index');
+        } catch (NotFoundResourceException $th) {
+            return $this->createNotFoundException("Impossible de supprmer ce restaurant");
+        }
     }
 }

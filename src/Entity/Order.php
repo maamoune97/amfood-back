@@ -191,4 +191,20 @@ class Order
 
         return $this;
     }
+
+    public function getTotalPrice() : float
+    {
+        $somme = 0;
+
+        foreach ($this->getOrderArticlePacks() as $orderArticlePack) 
+        {
+            $somme += $orderArticlePack->getArticle()->getPrice();
+            
+            foreach ($orderArticlePack->getOptionFieldsTaken() as $optionFieldTaken) {
+                $somme += $optionFieldTaken->getAdditionalPrice();
+            }
+        }
+
+        return $somme;
+    }
 }

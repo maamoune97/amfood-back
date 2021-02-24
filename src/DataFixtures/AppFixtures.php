@@ -108,7 +108,7 @@ class AppFixtures extends Fixture
 
                             $article = new Article();
                             $article->setName($faker->words(mt_rand(1, 4), true))
-                                ->setPrice($faker->price(1000, 5000, false, false))
+                                ->setPrice($faker->price(1000, 5000))
                                 ->setImage('default.jpg')
                                 ->setIngredient(implode(' , ', $ingredient))
                                 ->setSection($section);

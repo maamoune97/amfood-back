@@ -143,7 +143,10 @@ class Restaurant
             return $stars + $order->getRating()->getRestaurantStars();
         }, 0);
 
-        return round($totalStars / count($this->getOrders()), 1, PHP_ROUND_HALF_ODD);
+        if ($totalStars > 0) {
+            return round($totalStars / count($this->getOrders()), 1, PHP_ROUND_HALF_ODD);
+        }else
+        return 0;
     }
 
     public function __construct()
