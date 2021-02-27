@@ -30,14 +30,14 @@ class City
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"island_read"})
+     * @Groups({"island_read", "user_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
      * @Assert\NotNull(message="Entrez le nom de la ville")
-     * @Groups({"island_read"})
+     * @Groups({"island_read", "user_read"})
      */
     private $name;
 

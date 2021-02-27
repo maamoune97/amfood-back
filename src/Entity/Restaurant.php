@@ -37,13 +37,13 @@ class Restaurant
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"restaurants_subresource", "restaurant_read", "orderWrite", "order_read"})
+     * @Groups({"restaurants_subresource", "restaurant_read", "orderWrite", "order_read", "user_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Groups({"restaurants_subresource", "restaurant_read", "order_read"})
+     * @Groups({"restaurants_subresource", "restaurant_read", "order_read", "user_read"})
      * @Assert\NotBlank(message="le nom du réstaurant est obligatoire!")
      * 
      */
@@ -51,6 +51,7 @@ class Restaurant
 
     /**
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="restaurants")
+     * @Groups({"user_read"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $location;
@@ -80,7 +81,7 @@ class Restaurant
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"restaurants_subresource", "restaurant_read"})
+     * @Groups({"restaurants_subresource", "restaurant_read", "user_read"})
      *
      */
     private $imageLogo;
@@ -92,7 +93,7 @@ class Restaurant
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Groups({"restaurants_subresource", "restaurant_read"})
+     * @Groups({"restaurants_subresource", "restaurant_read", "user_read"})
      */
     private $speciality;
 
@@ -140,13 +141,10 @@ class Restaurant
     public function getAvgStars(): float
     {
         $totalStars = array_reduce($this->getOrders()->toArray(), function ($stars, $order) {
-            return $stars + $order->getRating()->getRestaurantStars();
+            return $order->getRating() ? $stars + $order->getRating()->getRestaurantStars() : $stars;
         }, 0);
 
-        if ($totalStars > 0) {
-            return round($totalStars / count($this->getOrders()), 1, PHP_ROUND_HALF_ODD);
-        }else
-        return 0;
+        return $totalStars > 0 ? round($totalStars / count($this->getOrders()), 1, PHP_ROUND_HALF_ODD) : 0;  
     }
 
     public function __construct()

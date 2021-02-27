@@ -65,7 +65,7 @@ class Order
     /**
      * @ORM\ManyToOne(targetEntity=Restaurant::class, inversedBy="orders")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"orderWrite", "order_read"})
+     * @Groups({"orderWrite", "order_read", "user_read"})
      */
     private $restaurant;
 
