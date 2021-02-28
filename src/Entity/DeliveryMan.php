@@ -44,7 +44,10 @@ class DeliveryMan
      */
     private $deliveries;
 
-    public $phone;
+    public function __construct()
+    {
+        $this->deliveries = new ArrayCollection();
+    }
 
     /**
      * @ORM\PrePersist
@@ -56,11 +59,6 @@ class DeliveryMan
         if (!$this->createdAt) {
             $this->setCreatedAt(new DateTime());
         }
-    }
-
-    public function __construct()
-    {
-        $this->deliveries = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -134,4 +132,6 @@ class DeliveryMan
 
         return $this;
     }
+
+   
 }

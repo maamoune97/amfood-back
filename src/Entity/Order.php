@@ -48,6 +48,7 @@ class Order
 
     /**
      * @ORM\OneToOne(targetEntity=Delivery::class, mappedBy="command", cascade={"persist", "remove"})
+     * @Groups({"orderWrite", "order_read"})
      */
     private $delivery;
 

@@ -17,7 +17,7 @@ class Delivery
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"user_read"})
+     * @Groups({"user_read", "orderWrite", "order_read"})
      */
     private $id;
 
@@ -30,13 +30,13 @@ class Delivery
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user_read"})
+     * @Groups({"user_read", "orderWrite", "order_read"})
      */
     private $address;
 
     /**
      * @ORM\Column(type="string", length=15)
-     * @Groups({"user_read"})
+     * @Groups({"user_read", "orderWrite", "order_read"})
      */
     private $status;
 
@@ -49,15 +49,26 @@ class Delivery
     /**
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="deliveries")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user_read"})
+     * @Groups({"user_read", "orderWrite"})
      */
     private $city;
 
     /**
      * @ORM\ManyToOne(targetEntity=DeliveryMan::class, inversedBy="deliveries")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $deliveryMan;
+
+    /**
+     * @ORM\Column(type="string", length=15)
+     * @Groups({"orderWrite", "order_read"})
+     */
+    private $longitude;
+
+    /**
+     * @ORM\Column(type="string", length=15)
+     * @Groups({"orderWrite", "order_read"})
+     */
+    private $latitude;
 
     public function getId(): ?int
     {
@@ -132,6 +143,30 @@ class Delivery
     public function setDeliveryMan(?DeliveryMan $deliveryMan): self
     {
         $this->deliveryMan = $deliveryMan;
+
+        return $this;
+    }
+
+    public function getLongitude(): ?string
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(string $longitude): self
+    {
+        $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    public function getLatitude(): ?string
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(string $latitude): self
+    {
+        $this->latitude = $latitude;
 
         return $this;
     }

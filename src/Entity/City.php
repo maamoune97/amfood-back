@@ -30,7 +30,7 @@ class City
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"island_read", "user_read"})
+     * @Groups({"island_read", "user_read", "orderWrite"})
      */
     private $id;
 
@@ -174,7 +174,7 @@ class City
     {
         if (!$this->deliveryMen->contains($deliveryMan)) {
             $this->deliveryMen[] = $deliveryMan;
-            $deliveryMan->setRegion($this);
+            $deliveryMan->setCity($this);
         }
 
         return $this;
@@ -185,8 +185,8 @@ class City
         if ($this->deliveryMen->contains($deliveryMan)) {
             $this->deliveryMen->removeElement($deliveryMan);
             // set the owning side to null (unless already changed)
-            if ($deliveryMan->getRegion() === $this) {
-                $deliveryMan->setRegion(null);
+            if ($deliveryMan->getCity() === $this) {
+                $deliveryMan->setCity(null);
             }
         }
 
