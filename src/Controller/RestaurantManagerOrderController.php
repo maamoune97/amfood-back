@@ -2,10 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Order;
 use App\Entity\User;
-use App\Repository\OrderRepository;
 use App\Service\MercureCookieGenerator;
 use App\Service\OrderService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,12 +19,10 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class RestaurantManagerOrderController extends AbstractController
 {
-    private OrderRepository $orderRepository;
     private OrderService $orderService;
 
-    public function __construct(OrderRepository $orderRepository, OrderService $orderService)
+    public function __construct(OrderService $orderService)
     {
-        $this->orderRepository = $orderRepository;
         $this->orderService = $orderService;
     }
 
@@ -89,6 +88,34 @@ class RestaurantManagerOrderController extends AbstractController
     }
 
     /**
+     * Get current user's in preparation command 
+     *
+     * @Route("/in-preparation", name="in_preparation")
+     * 
+     * @return Response
+     */
+    public function getInPreparation() : Response
+    {
+        return $this->render("restaurant_manager/order/inPreparation.html.twig",[
+            'orders' => $this->orderService->findByStatus(1),
+        ]);
+    }
+
+    /**
+     * Get current user's finished command 
+     *
+     * @Route("/finished", name="finished")
+     * 
+     * @return Response
+     */
+    public function getInFinished() : Response
+    {
+        return $this->render("restaurant_manager/order/finished.html.twig",[
+            'orders' => $this->orderService->findByStatus(3),
+        ]);
+    }
+
+    /**
      * find command by id
      *
      * @Route("/{id}", name="getOrder")
@@ -98,6 +125,22 @@ class RestaurantManagerOrderController extends AbstractController
     public function getOrder($id) : JsonResponse
     {
         return $this->json($this->orderService->customizedFind($id));
+    }
+
+    /**
+     * Accept a commande
+     *
+     * @Route("/accept-order/{id}", name="accept_order")
+     * 
+     * @return JsonResponse
+     */
+    public function acceptOrder(Order $order, EntityManagerInterface $manager) : Response
+    {
+        $order->setStatus(1);
+        $manager->persist($order);
+        $manager->flush();
+
+        return $this->redirectToRoute("restaurant_manager_order_waiting");
     }
 
 }

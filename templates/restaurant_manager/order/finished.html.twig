@@ -77,24 +77,22 @@
     <div class="grid">
         {% include "restaurant_manager/order/leftBarMenu.html.twig" %}
         <div class="orders">
-            <h1 class="text-center h2 mb-3 mt-2">En attente</h1>
+            <h1 class="text-center h2 mb-3 mt-2">Términer</h1>
             {% for order in orders %}
-                    <!-- <li> -->
-                        <div class="card show-order mb-4 card-order" data-id={{order.id}} style="width: auto;">
-                            <div class="card-header">
-                                {{order.id}}
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                {% for orderArticlePack in order.orderArticlePacks %}
-                                    <li class="list-group-item">{{orderArticlePack.quantity}}x {{orderArticlePack.article.name}}</li>
-                                {% endfor %}
-                            </ul>
-                            <div class="card-footer">
-                                <span class="float-right text-danger">{{order.createdAt | date('d-m-Y H:i')}}</span>
-                            </div>
-                        </div>
-                    <!-- </li> -->
-                {% endfor %}
+                <div class="card show-order mb-4 card-order" data-id={{order.id}} style="width: auto;">
+                    <div class="card-header">
+                        {{order.id}}
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        {% for orderArticlePack in order.orderArticlePacks %}
+                            <li class="list-group-item">{{orderArticlePack.quantity}}x {{orderArticlePack.article.name}}</li>
+                        {% endfor %}
+                    </ul>
+                    <div class="card-footer">
+                        <span class="float-right text-danger">{{order.createdAt | date('d-m-Y H:i')}}</span>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
         <div class="show">
             <h1 class="text-center h2 mb-3 mt-2">Aprecus</h1>
@@ -115,11 +113,12 @@
                 </table>
                 <h2 class="h4 mt-4 mr-2">Total de la commande : <span class="float-right" id="showCmdPrice">7 500 Fc</span></h2>
                 <div class="d-flex justify-content-around">
-                    <button class="btn btn-danger" type="button">Refuser</button>
-                    <a href="#" id="acceptCmd" class="btn btn-success">Accepter</a>
+                    <button class="btn btn-danger" type="button">Annuler</button>
+                    <button class="btn btn-success" type="button">Remis au livreur</button>
                 </div>
             </div>
         </div>
     </div>
+
 {% endblock %}
 

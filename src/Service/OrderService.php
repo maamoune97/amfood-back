@@ -4,22 +4,25 @@ namespace App\Service;
 
 use App\Entity\User;
 use App\Repository\OrderRepository;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Security;
 
 class OrderService
 {
     private OrderRepository $orderRepository;
     private User $currentUser;
+    private $router;
 
      /**
     *  __Construct method
     * @param OrderRepository $orderRepository
     * @param Security $security
     */
-    public function __construct(OrderRepository $orderRepository, Security $security)
+    public function __construct(OrderRepository $orderRepository, Security $security, UrlGeneratorInterface $router)
     {
         $this->orderRepository = $orderRepository;
         $this->currentUser = $security->getUser();
+        $this->router = $router;
     }
 
     public function findByStatus(int $status) : array
@@ -50,9 +53,14 @@ class OrderService
         $orderData['status'] = $order->getStatus();
         $orderData['totalPrice'] = $order->getTotalPrice();
 
+        $acceptOrderUrl = $this->router->generate(
+            'restaurant_manager_order_accept_order',
+            ['id' => $order->getId()]
+        );
+        $orderData['acceptOrderUrl'] = $acceptOrderUrl;
+
         $orderArticlePacks = [];
         
-
         foreach ($order->getOrderArticlePacks() as $keyorderArticlePack => $orderArticlePack) {
             $pack = [];
             $pack['quantity'] = $orderArticlePack->getQuantity();

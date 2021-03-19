@@ -38,6 +38,12 @@ class DeliveryMan
      * @ORM\JoinColumn(nullable=false)
      */
     private $city;
+    /**
+     * sert à afficher le champ de recherche pour trouver si un numéro existe
+     *
+     * @var string
+     */
+    public $phone;
 
     /**
      * @ORM\OneToMany(targetEntity=Delivery::class, mappedBy="deliveryMan")
