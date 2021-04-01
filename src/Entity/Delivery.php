@@ -24,7 +24,6 @@ class Delivery
     /**
      * @ORM\OneToOne(targetEntity=Order::class, inversedBy="delivery", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user_read"})
      */
     private $command;
 
@@ -43,7 +42,7 @@ class Delivery
     /**
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="deliveries")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user_read", "orderWrite"})
+     * @Groups({"user_read", "orderWrite", "order_read"})
      */
     private $city;
 
@@ -54,13 +53,13 @@ class Delivery
 
     /**
      * @ORM\Column(type="string", length=15)
-     * @Groups({"orderWrite", "order_read"})
+     * @Groups({"orderWrite", "order_read", "user_read"})
      */
     private $longitude;
 
     /**
      * @ORM\Column(type="string", length=15)
-     * @Groups({"orderWrite", "order_read"})
+     * @Groups({"orderWrite", "order_read", "user_read"})
      */
     private $latitude;
 

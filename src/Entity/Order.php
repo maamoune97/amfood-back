@@ -18,7 +18,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *  denormalizationContext={"groups"={"orderWrite"}},
  *  normalizationContext={"groups"={"order_read"}}
  * )
- * @ApiFilter(SearchFilter::class, properties={"status", "customer.id"})
+ * @ApiFilter(SearchFilter::class, properties={"status", "delivery.city"})
  */
 class Order
 {
@@ -51,7 +51,7 @@ class Order
 
     /**
      * @ORM\OneToOne(targetEntity=Delivery::class, mappedBy="command", cascade={"persist", "remove"})
-     * @Groups({"orderWrite", "order_read"})
+     * @Groups({"orderWrite", "order_read", "user_read"})
      */
     private $delivery;
 

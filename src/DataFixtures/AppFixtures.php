@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Article;
 use App\Entity\City;
+use App\Entity\Delivery;
 use App\Entity\Island;
 use App\Entity\Order;
 use App\Entity\OrderArticlePack;
@@ -38,6 +39,7 @@ class AppFixtures extends Fixture
             'Moheli' => ['Fomboni', 'Wanani', 'Mirigoni']
         ];
 
+        $places = [];
         $users = [];
         $articles = [];
 
@@ -69,87 +71,106 @@ class AppFixtures extends Fixture
             $users[] = $user;
         }
 
+        $j = 0;
         foreach ($islands as $island => $cities) {
             $isle = new Island();
             $isle->setName($island);
 
             $manager->persist($isle);
-
+            
             foreach ($cities as $city) {
                 $place = new City();
                 $place->setName($city)
                     ->setIsland($isle);
                 $manager->persist($place);
+                $places[$j][] = $place;
+            }
+            $j +=1;
+        }
 
-                for ($r = 0; $r < mt_rand(1, 6); $r++) {
-                    $restaurant = new Restaurant();
-                    $restaurant->setName($faker->company)
-                        ->setPhone($faker->e164PhoneNumber)
-                        ->setEmail($faker->boolean ? $faker->companyEmail : '')
-                        ->setLocation($place)
-                        ->setActivate($faker->boolean)
-                        ->setImageLogo('default.jpg')
-                        ->setSpeciality($faker->words(mt_rand(3, 5), true));
+        for ($r = 0; $r < mt_rand(8, 27); $r++) {
 
-                    $manager->persist($restaurant);
+            $numIsland = $faker->randomElement([0,1,2]);
 
-                    for ($s = 0; $s < mt_rand(3, 6); $s++) {
-                        $section = new Section();
-                        $section->setName($faker->words(mt_rand(1, 4), true))
-                            ->setImage('default.jpg')
-                            ->setRestaurant($restaurant);
-                        $manager->persist($section);
+            $restaurant = new Restaurant();
+            $restaurant->setName($faker->company)
+                ->setPhone($faker->e164PhoneNumber)
+                ->setEmail($faker->boolean ? $faker->companyEmail : '')
+                ->setLocation($faker->randomElement($places[$numIsland]))
+                ->setActivate($faker->boolean)
+                ->setImageLogo('default.jpg')
+                ->setSpeciality($faker->words(mt_rand(3, 5), true));
 
-                        for ($a = 0; $a < mt_rand(3, 7); $a++) {
-                            $ingredient = [];
-                            for ($i = 0; $i < mt_rand(0, 7); $i++) {
-                                $ingredient[] = $faker->word;
-                            }
+            $manager->persist($restaurant);
 
-                            $article = new Article();
-                            $article->setName($faker->words(mt_rand(1, 4), true))
-                                ->setPrice($faker->price(1000, 5000))
-                                ->setImage('default.jpg')
-                                ->setIngredient(implode(' , ', $ingredient))
-                                ->setSection($section);
+            for ($s = 0; $s < mt_rand(3, 6); $s++) {
+                $section = new Section();
+                $section->setName($faker->words(mt_rand(1, 4), true))
+                    ->setImage('default.jpg')
+                    ->setRestaurant($restaurant);
+                $manager->persist($section);
 
-                            $manager->persist($article);
-
-                            if ($faker->boolean(20)) {
-                                $articles[] = $article;
-                            }
-                        }
+                for ($a = 0; $a < mt_rand(3, 7); $a++) {
+                    $ingredient = [];
+                    for ($i = 0; $i < mt_rand(0, 7); $i++) {
+                        $ingredient[] = $faker->word;
                     }
 
-                    for ($o = 0; $o < mt_rand(0, 10); $o++) {
-                        $order = new Order();
+                    $article = new Article();
+                    $article->setName($faker->words(mt_rand(1, 4), true))
+                        ->setPrice($faker->price(1000, 5000))
+                        ->setImage('default.jpg')
+                        ->setIngredient(implode(' , ', $ingredient))
+                        ->setSection($section);
 
-                        $order->setCreatedAt(new DateTime())
-                            ->setCustomer($faker->randomElement($users))
-                            ->setStatus('0')
-                            ->setRestaurant($restaurant);
+                    $manager->persist($article);
 
-                        for ($oap = 0; $oap < mt_rand(1, 5); $oap++) {
-
-                            $orderArticlePack = new OrderArticlePack();
-                            $orderArticlePack->setArticle($faker->randomElement($articles))
-                                ->setQuantity(mt_rand(1, 4))
-                                ->setCommand($order);
-                            // $order->addOrderArticlePack($orderArticlePack);
-                            $manager->persist($orderArticlePack);
-                        }
-                        $manager->persist($order);
-
-                        $rating = new Rating();
-
-                        $rating->setDeliveryManStars(mt_rand(1, 5))
-                            ->setDeliveryManComment($faker->words(mt_rand(3, 7), true))
-                            ->setRestaurantStars((mt_rand(1, 5)))
-                            ->setRestaurantComment($faker->words(mt_rand(3, 7), true))
-                            ->setOrderConcerned($order);
-                        $manager->persist($rating);
+                    if ($faker->boolean(20)) {
+                        $articles[] = $article;
                     }
                 }
+            }
+
+            for ($o = 0; $o < mt_rand(0, 10); $o++) {
+                $order = new Order();
+
+                $order->setCreatedAt(new DateTime())
+                    ->setCustomer($faker->randomElement($users))
+                    ->setStatus($faker->randomElement([0,1,2,3]))
+                    ->setRestaurant($restaurant);
+
+                for ($oap = 0; $oap < mt_rand(1, 5); $oap++) {
+
+                    $orderArticlePack = new OrderArticlePack();
+                    $orderArticlePack->setArticle($faker->randomElement($articles))
+                        ->setQuantity(mt_rand(1, 4))
+                        ->setCommand($order);
+                    // $order->addOrderArticlePack($orderArticlePack);
+                    $manager->persist($orderArticlePack);
+                }
+
+                //creation de la livraison
+
+                $delivery = new Delivery();
+                $delivery->setAddress($faker->address)
+                         ->setCommand($order)
+                         ->setCity($faker->randomElement($places[$numIsland]))
+                         ->setLatitude($faker->randomFloat(6))
+                         ->setLongitude($faker->randomFloat(6))
+                         ;
+        
+                $manager->persist($delivery);
+
+                $manager->persist($order);
+
+                $rating = new Rating();
+
+                $rating->setDeliveryManStars(mt_rand(1, 5))
+                    ->setDeliveryManComment($faker->words(mt_rand(3, 7), true))
+                    ->setRestaurantStars((mt_rand(1, 5)))
+                    ->setRestaurantComment($faker->words(mt_rand(3, 7), true))
+                    ->setOrderConcerned($order);
+                $manager->persist($rating);
             }
         }
 
