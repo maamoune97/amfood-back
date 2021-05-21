@@ -8,6 +8,7 @@ use App\Repository\DeliveryManRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=DeliveryManRepository::class)
@@ -19,6 +20,7 @@ class DeliveryMan
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"user_read"})
      */
     private $id;
 
@@ -30,14 +32,17 @@ class DeliveryMan
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"user_read"})
      */
     private $createdAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="deliveryMen")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user_read"})
      */
     private $city;
+    
     /**
      * sert à afficher le champ de recherche pour trouver si un numéro existe
      *

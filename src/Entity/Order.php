@@ -16,7 +16,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * @ORM\Table(name="`order`")
  * @ApiResource(
  *  denormalizationContext={"groups"={"orderWrite"}},
- *  normalizationContext={"groups"={"order_read"}}
+ *  normalizationContext={"groups"={"order_read"}},
+ * itemOperations={"GET", "PUT", "PATCH", "DELETE", "UPDATE_STATUS" = {
+ *      "method" = "POST",
+ *      "path" = "/orders/{id}/update-status-to/{status}",
+ *      "controller" = "App\Controller\OrderStatusUpdateController"    
+ *  } }
  * )
  * @ApiFilter(SearchFilter::class, properties={"status", "delivery.city"})
  */

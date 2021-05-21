@@ -64,9 +64,10 @@ class User implements UserInterface
      * @Groups({"user_read"})
      */
     private $orders;
-
+    
     /**
      * @ORM\OneToOne(targetEntity=DeliveryMan::class, mappedBy="user", cascade={"persist", "remove"})
+     * @Groups({"user_read"})
      */
     private $deliveryMan;
 
