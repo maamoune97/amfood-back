@@ -121,4 +121,23 @@ class OrderArticlePack
 
         return $this;
     }
+
+    /**
+     * get sub total price of current pack
+     *
+     * @Groups({"user_read", "order_read"})
+     * 
+     * @return float
+     */
+    public function getSubTotalPrice(): float
+    {
+        $subTotal = $this->getArticle()->getPrice();
+        
+        foreach ($this->getOptionFieldsTaken() as $optionField)
+        {
+            $subTotal += $optionField->getAdditionalPrice();
+        }
+
+        return $subTotal * $this->getQuantity();
+    }
 }
