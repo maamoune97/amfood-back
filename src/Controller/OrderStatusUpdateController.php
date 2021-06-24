@@ -6,27 +6,17 @@ use App\Entity\Order;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Security\Core\Security;
 
 class OrderStatusUpdateController extends AbstractController
 {
-    private $manager;
-    private $security;
-
-    public function __construct(EntityManagerInterface $manager,Security $security)
-    {
-        $this->manager = $manager;
-        $this->security = $security;
-    }
-
-    public function __invoke(Order $order, int $status): JsonResponse
+    public function __invoke(Order $order, int $status, EntityManagerInterface $manager): JsonResponse
     {
         switch ($status)
         {
             case 0:
                 $order->setStatus($status);
-                $this->manager->persist($order);
-                $this->manager->flush();
+                $manager->persist($order);
+                $manager->flush();
                 return $this->json(['error' => false, 'errorMessage' => null]);
                 break;
 
@@ -39,12 +29,12 @@ class OrderStatusUpdateController extends AbstractController
                 $order->setStatus($status);
 
                 $delivery = $order->getDelivery();
-                $delivery->setDeliveryMan($this->security->getUser()->getDeliveryMan());
+                $delivery->setDeliveryMan($this->getUser()->getDeliveryMan());
                 $order->setDelivery($delivery);
 
-                $this->manager->persist($delivery);
-                $this->manager->persist($order);
-                $this->manager->flush();
+                $manager->persist($delivery);
+                $manager->persist($order);
+                $manager->flush();
 
                 return $this->json(['error' => false, 'errorMessage' => null]);
                 break;
@@ -55,8 +45,8 @@ class OrderStatusUpdateController extends AbstractController
                     return $this->json(['error' => true, 'errorMessage' => "current status is {$order->getStatus()}, it must be equal 2 to update it to 3"], 500);
                 }
                 $order->setStatus($status);
-                $this->manager->persist($order);
-                $this->manager->flush();
+                $manager->persist($order);
+                $manager->flush();
                 return $this->json(['error' => false, 'errorMessage' => null]);
                 break;
             
@@ -66,8 +56,8 @@ class OrderStatusUpdateController extends AbstractController
                     return $this->json(['error' => true, 'errorMessage' => "current status is {$order->getStatus()}, it must be equal 3 to update it to 4"], 500);
                 }
                 $order->setStatus($status);
-                $this->manager->persist($order);
-                $this->manager->flush();
+                $manager->persist($order);
+                $manager->flush();
                 return $this->json(['error' => false, 'errorMessage' => null]);
                 break;
 
@@ -77,8 +67,8 @@ class OrderStatusUpdateController extends AbstractController
                     return $this->json(['error' => true, 'errorMessage' => "current status is {$order->getStatus()}, it must be equal 4 to update it to 5"], 500);
                 }
                 $order->setStatus($status);
-                $this->manager->persist($order);
-                $this->manager->flush();
+                $manager->persist($order);
+                $manager->flush();
                 return $this->json(['error' => false, 'errorMessage' => null]);
                 break;
             

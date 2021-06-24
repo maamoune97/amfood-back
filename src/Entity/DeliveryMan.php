@@ -6,6 +6,7 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\DeliveryManRepository;
 use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -20,7 +21,7 @@ class DeliveryMan
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"user_read"})
+     * @Groups({"user_read", "order_refused_read"})
      */
     private $id;
 
@@ -52,12 +53,19 @@ class DeliveryMan
 
     /**
      * @ORM\OneToMany(targetEntity=Delivery::class, mappedBy="deliveryMan")
+     * @Groups({"user_read"})
      */
     private $deliveries;
+
+    /**
+     * @ORM\OneToMany(targetEntity=OrderRefused::class, mappedBy="deliveryMan")
+     */
+    private $ordersRefused;
 
     public function __construct()
     {
         $this->deliveries = new ArrayCollection();
+        $this->ordersRefused = new ArrayCollection();
     }
 
     /**
@@ -144,5 +152,34 @@ class DeliveryMan
         return $this;
     }
 
-   
+    /**
+     * @return Collection|OrderRefused[]
+     */
+    public function getOrdersRefused(): Collection
+    {
+        return $this->ordersRefused;
+    }
+
+    public function addOrdersRefused(OrderRefused $ordersRefused): self
+    {
+        if (!$this->ordersRefused->contains($ordersRefused)) {
+            $this->ordersRefused[] = $ordersRefused;
+            $ordersRefused->setDeliveryMan($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrdersRefused(OrderRefused $ordersRefused): self
+    {
+        if ($this->ordersRefused->contains($ordersRefused)) {
+            $this->ordersRefused->removeElement($ordersRefused);
+            // set the owning side to null (unless already changed)
+            if ($ordersRefused->getDeliveryMan() === $this) {
+                $ordersRefused->setDeliveryMan(null);
+            }
+        }
+
+        return $this;
+    }
 }

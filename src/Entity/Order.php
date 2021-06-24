@@ -21,7 +21,13 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *      "method" = "POST",
  *      "path" = "/orders/{id}/update-status-to/{status}",
  *      "controller" = "App\Controller\OrderStatusUpdateController"    
- *  } }
+ *  },
+ *  "REFUSE_BY_DELIVERY_MAN" = {
+ *      "method" = "POST",
+ *      "path" = "/orders/{id}/refused-by-delivery-man",
+ *      "controller" = "App\Controller\DeliveryManOrderRefuseController"
+ *      }
+ * }
  * )
  * @ApiFilter(SearchFilter::class, properties={"status", "delivery.city"})
  */
@@ -31,7 +37,7 @@ class Order
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"user_read", "orderWrite", "order_read"})
+     * @Groups({"user_read", "orderWrite", "order_read", "order_refused_read"})
      */
     private $id;
 
@@ -50,13 +56,13 @@ class Order
 
     /**
      * @ORM\Column(type="string", length=15)
-     * @Groups({"user_read", "orderWrite", "order_read"})
+     * @Groups({"user_read", "orderWrite", "order_read", "order_refused_read"})
      */
     private $status;
 
     /**
      * @ORM\OneToOne(targetEntity=Delivery::class, mappedBy="command", cascade={"persist", "remove"})
-     * @Groups({"orderWrite", "order_read", "user_read"})
+     * @Groups({"orderWrite", "order_read"})
      */
     private $delivery;
 
@@ -78,9 +84,15 @@ class Order
      */
     private $restaurant;
 
+    /**
+     * @ORM\OneToMany(targetEntity=OrderRefused::class, mappedBy="command")
+     */
+    private $refuseds;
+
     public function __construct()
     {
         $this->orderArticlePacks = new ArrayCollection();
+        $this->refuseds = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -215,5 +227,36 @@ class Order
         }
 
         return $somme;
+    }
+
+    /**
+     * @return Collection|OrderRefused[]
+     */
+    public function getRefuseds(): Collection
+    {
+        return $this->refuseds;
+    }
+
+    public function addRefused(OrderRefused $refused): self
+    {
+        if (!$this->refuseds->contains($refused)) {
+            $this->refuseds[] = $refused;
+            $refused->setCommand($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRefused(OrderRefused $refused): self
+    {
+        if ($this->refuseds->contains($refused)) {
+            $this->refuseds->removeElement($refused);
+            // set the owning side to null (unless already changed)
+            if ($refused->getCommand() === $this) {
+                $refused->setCommand(null);
+            }
+        }
+
+        return $this;
     }
 }
