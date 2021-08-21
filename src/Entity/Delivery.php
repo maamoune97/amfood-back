@@ -24,7 +24,6 @@ class Delivery
     /**
      * @ORM\OneToOne(targetEntity=Order::class, inversedBy="delivery", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user_read"})
      */
     private $command;
 

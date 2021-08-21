@@ -15,9 +15,6 @@ class HomeController extends AbstractController
      */
     public function index(Request $request)
     {
-        dump($_SERVER);
-        dump($request);
-        dump($request->server->get('SERVER_PROTOCOL').'://'.$request->server->get('HTTP_HOST'));
         return $this->render('home/home.html.twig', [
             
         ]);

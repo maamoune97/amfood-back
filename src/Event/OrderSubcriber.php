@@ -19,7 +19,10 @@ class OrderSubcriber implements EventSubscriberInterface
 
     public function __construct(Security $security, EntityManagerInterface $manager)
     {
-        $this->user = $security->getUser();
+        if ($security->getUser())
+        {
+            $this->user = $security->getUser();
+        }
         $this->manager = $manager;
     }
 
@@ -50,6 +53,7 @@ class OrderSubcriber implements EventSubscriberInterface
         if ($normalizationContext && $method === 'GET')
         if ($normalizationContext['operation_type'] === "collection" && $normalizationContext['resource_class'] === Order::class && $hideRefused)
         {
+            
             $orders = $event->getControllerResult();;
 
             $oredersIdRefused = [];

@@ -7,12 +7,14 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class FileUploader
 {
-    private $targetDirectory;
+    private $targetDirectoryPath;
+    private $targetDirectoryName;
     private $slugger;
 
-    public function __construct($targetDirectory, SluggerInterface $slugger)
+    public function __construct($targetDirectoryPath, $targetDirectoryName, SluggerInterface $slugger)
     {
-        $this->targetDirectory = $targetDirectory;
+        $this->targetDirectoryPath = $targetDirectoryPath;
+        $this->targetDirectoryName = $targetDirectoryName;
         $this->slugger = $slugger;
     }
 
@@ -31,18 +33,38 @@ class FileUploader
 
         try
         {
-            $file->move($this->getTargetDirectory().$pathDirectory.'/', $fileName);
-        } catch (FileException $e)
+            $file->move($this->getTargetDirectoryPath().$pathDirectory.'/', $fileName);
+        }
+        catch (FileException $e)
         {
             throw $e;
             // ... handle exception if something happens during file upload
         }
 
+        //TODO return $filePath and change template src form img balises
+        $filePath = $this->getServerHost().'/'.$this->targetDirectoryName.'/'.$pathDirectory.'/'.$fileName;
+
         return $fileName;
     }
 
-    public function getTargetDirectory()
+    public function getTargetDirectoryPath()
     {
-        return $this->targetDirectory;
+        return $this->targetDirectoryPath;
+    }
+
+    public function getServerHost(): string
+    {
+        if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
+            $link = "https";
+        else
+            $link = "http";
+
+        // Here append the common URL characters.
+        $link .= "://";
+        
+        // Append the host(domain name, ip) to the URL.
+        $link .= $_SERVER['HTTP_HOST'];
+
+        return $link;
     }
 }
