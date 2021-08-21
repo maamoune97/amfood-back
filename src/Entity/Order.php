@@ -29,7 +29,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *      }
  * }
  * )
- * @ApiFilter(SearchFilter::class, properties={"status", "delivery.city"})
+ * @ApiFilter(SearchFilter::class, properties={"status", "delivery.city", "restaurant.id"})
  */
 class Order
 {
