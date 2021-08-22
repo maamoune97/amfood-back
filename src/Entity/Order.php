@@ -72,7 +72,7 @@ class Order
     private $rating;
 
     /**
-     * @ORM\OneToMany(targetEntity=OrderArticlePack::class, mappedBy="command", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=OrderArticlePack::class, mappedBy="command", orphanRemoval=true, cascade={"persist"}))
      * @Groups({"user_read", "orderWrite", "order_read"})
      */
     private $orderArticlePacks;

@@ -45,7 +45,7 @@ class OrderArticlePack
     private $command;
 
     /**
-     * @ORM\ManyToMany(targetEntity=OptionField::class, inversedBy="orderArticlePacks")
+     * @ORM\ManyToMany(targetEntity=OptionField::class, inversedBy="orderArticlePacks", cascade={"persist"})
      * @Groups({"orderWrite", "user_read", "order_read"})
      */
     private $optionFieldsTaken;

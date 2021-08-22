@@ -5,32 +5,27 @@ namespace App\Event;
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Entity\Order;
 use App\Entity\User;
-use DateTime;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Security;
 
-class OrderSubcriber implements EventSubscriberInterface
+class HideRefuseOrderSuscriber implements EventSubscriberInterface
 {
     private User $user;
-    private EntityManagerInterface $manager;
 
-    public function __construct(Security $security, EntityManagerInterface $manager)
+    public function __construct(Security $security)
     {
         if ($security->getUser())
         {
             $this->user = $security->getUser();
         }
-        $this->manager = $manager;
     }
 
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::VIEW => ['handleOrder', EventPriorities::PRE_VALIDATE],
-            KernelEvents::VIEW => ['hideRefuseOrdersToDelivery', EventPriorities::PRE_SERIALIZE],
+            KernelEvents::VIEW => ['hideRefuseOrdersToDelivery', EventPriorities::PRE_VALIDATE],
         ];
     }
 
@@ -43,7 +38,8 @@ class OrderSubcriber implements EventSubscriberInterface
      */
     public function hideRefuseOrdersToDelivery(ViewEvent $event)
     {
-
+        //dd("hideRefuseOrdersToDelivery", $event);
+        
         //parametre à rajouter et assigné la valeur 1 dans la requete pour appliquer ce "filtre"
         $hideRefused = $event->getRequest()->get("hide_refused") == '1' ? true : false;
         
@@ -70,31 +66,6 @@ class OrderSubcriber implements EventSubscriberInterface
             }
 
             $event->setControllerResult($cleanOrders);
-        }
-    }
-
-
-    public function handleOrder(ViewEvent $event)
-    {
-        $result = $event->getControllerResult();
-        $method = $event->getRequest()->getMethod();
-
-        if ($result instanceof Order && $method === 'POST')
-        {
-            $order = $result;
-            unset($result);
-            // dd($order);
-
-            $order->setCustomer($this->user);
-            $order->setCreatedAt(new DateTime());
-
-            foreach ($order->getOrderArticlePacks() as $orderArticlePack) {
-                $orderArticlePack->setCommand($order);
-                $this->manager->persist($orderArticlePack);
-            }
-
-            //Gerer les options des articles
-            //dd($order);
         }
     }
 }
