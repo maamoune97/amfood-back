@@ -21,7 +21,7 @@ class DeliveryMan
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"user_read", "order_refused_read"})
+     * @Groups({"user_read", "order_refused_read", "delivery_read"})
      */
     private $id;
 

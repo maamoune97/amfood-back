@@ -37,7 +37,7 @@ class Order
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"user_read", "orderWrite", "order_read", "order_refused_read"})
+     * @Groups({"user_read", "orderWrite", "order_read", "order_refused_read", "delivery_read"})
      */
     private $id;
 
@@ -50,13 +50,13 @@ class Order
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"user_read", "orderWrite", "order_read"})
+     * @Groups({"user_read", "orderWrite", "order_read", "delivery_read"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="string", length=15)
-     * @Groups({"user_read", "orderWrite", "order_read", "order_refused_read"})
+     * @Groups({"user_read", "orderWrite", "order_read", "order_refused_read", "delivery_read"})
      */
     private $status;
 
@@ -80,7 +80,7 @@ class Order
     /**
      * @ORM\ManyToOne(targetEntity=Restaurant::class, inversedBy="orders")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"orderWrite", "order_read", "user_read"})
+     * @Groups({"orderWrite", "order_read", "user_read", "delivery_read"})
      */
     private $restaurant;
 

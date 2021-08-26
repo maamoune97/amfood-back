@@ -4,12 +4,17 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\DeliveryRepository;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ORM\Entity(repositoryClass=DeliveryRepository::class)
- * @ApiResource()
+ * @ApiResource(
+ * normalizationContext={"groups"={"delivery_read"}},
+ * )
+ * @ApiFilter(SearchFilter::class, properties={"deliveryMan.id", "command.status"})
  */
 class Delivery
 {
@@ -17,49 +22,51 @@ class Delivery
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"user_read", "orderWrite", "order_read"})
+     * @Groups({"user_read", "orderWrite", "order_read", "delivery_read"})
      */
     private $id;
 
     /**
      * @ORM\OneToOne(targetEntity=Order::class, inversedBy="delivery", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"delivery_read"})
      */
     private $command;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user_read", "orderWrite", "order_read"})
+     * @Groups({"user_read", "orderWrite", "order_read", "delivery_read"})
      */
     private $address;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"user_read"})
+     * @Groups({"user_read", "delivery_read"})
      */
     private $delivredAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="deliveries")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user_read", "orderWrite", "order_read"})
+     * @Groups({"user_read", "orderWrite", "order_read", "delivery_read"})
      */
     private $city;
 
     /**
      * @ORM\ManyToOne(targetEntity=DeliveryMan::class, inversedBy="deliveries")
+     * @Groups({"delivery_read"})
      */
     private $deliveryMan;
 
     /**
      * @ORM\Column(type="string", length=15)
-     * @Groups({"orderWrite", "order_read", "user_read"})
+     * @Groups({"orderWrite", "order_read", "user_read", "delivery_read"})
      */
     private $longitude;
 
     /**
      * @ORM\Column(type="string", length=15)
-     * @Groups({"orderWrite", "order_read", "user_read"})
+     * @Groups({"orderWrite", "order_read", "user_read", "delivery_read"})
      */
     private $latitude;
 
