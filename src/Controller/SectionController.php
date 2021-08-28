@@ -117,7 +117,7 @@ class SectionController extends AbstractController
         $oldImage = $section->getImage();
 
         $section->setImage(
-            new File($this->getParameter('uploads_image_directory').'sections/'.$section->getImage())
+            new File($this->getParameter('uploads_image_directory_path').'sections/'.$section->getImage())
         );
         
         $form = $this->createForm(SectionType::class, $section);

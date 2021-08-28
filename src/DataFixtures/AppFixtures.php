@@ -43,6 +43,13 @@ class AppFixtures extends Fixture
         $users = [];
         $articles = [];
 
+        $prices = [];
+
+        for ($p=500; $p <= 15000; $p+=50)
+        { 
+            $prices[] = $p;
+        }
+
         //creation user
         $user = new User();
 
@@ -98,7 +105,7 @@ class AppFixtures extends Fixture
                 ->setEmail($faker->boolean ? $faker->companyEmail : '')
                 ->setLocation($faker->randomElement($places[$numIsland]))
                 ->setActivate($faker->boolean)
-                ->setImageLogo('default.jpg')
+                ->setImageLogo('media/images/static/default.jpg')
                 ->setSpeciality($faker->words(mt_rand(3, 5), true));
 
             $manager->persist($restaurant);
@@ -106,7 +113,7 @@ class AppFixtures extends Fixture
             for ($s = 0; $s < mt_rand(3, 6); $s++) {
                 $section = new Section();
                 $section->setName($faker->words(mt_rand(1, 4), true))
-                    ->setImage('default.jpg')
+                    ->setImage('media/images/static/default.jpg')
                     ->setRestaurant($restaurant);
                 $manager->persist($section);
 
@@ -118,8 +125,8 @@ class AppFixtures extends Fixture
 
                     $article = new Article();
                     $article->setName($faker->words(mt_rand(1, 4), true))
-                        ->setPrice($faker->price(1000, 5000))
-                        ->setImage('default.jpg')
+                        ->setPrice($faker->price($faker->randomElement($prices)))
+                        ->setImage('media/images/static/default.jpg')
                         ->setIngredient(implode(' , ', $ingredient))
                         ->setSection($section);
 

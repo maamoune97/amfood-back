@@ -19,13 +19,13 @@ class FileUploader
     }
 
     /**
-     * Undocumented function
+     * upload file to server
      *
      * @param UploadedFile $file fichier à upluoder
-     * @param string $pathDirectory chemin du dossier sans les slash du debut et fin
+     * @param string $itemDirectoryName chemin du dossier sans les slash du debut et fin
      * @return string $fileName
      */
-    public function upload(UploadedFile $file, string $pathDirectory)
+    public function upload(UploadedFile $file, string $itemDirectoryName)
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = $this->slugger->slug($originalFilename);
@@ -33,7 +33,7 @@ class FileUploader
 
         try
         {
-            $file->move($this->getTargetDirectoryPath().$pathDirectory.'/', $fileName);
+            $file->move($this->getTargetDirectoryPath().$itemDirectoryName.'/', $fileName);
         }
         catch (FileException $e)
         {
@@ -42,9 +42,9 @@ class FileUploader
         }
 
         //TODO return $filePath and change template src form img balises
-        $filePath = $this->getServerHost().'/'.$this->targetDirectoryName.'/'.$pathDirectory.'/'.$fileName;
+        $filePath = $this->targetDirectoryName.$itemDirectoryName.'/'.$fileName;
 
-        return $fileName;
+        return $filePath;
     }
 
     public function getTargetDirectoryPath()

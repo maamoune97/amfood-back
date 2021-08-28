@@ -124,7 +124,7 @@ class RestaurantController extends AbstractController
         $oldImageLogo = $restaurant->getImageLogo();
 
         $restaurant->setImageLogo(
-            new File($this->getParameter('uploads_image_directory').'/restaurants\/'.$restaurant->getImageLogo())
+            new File($this->getParameter('uploads_image_directory_path').'/restaurants\/'.$restaurant->getImageLogo())
             );
         
         $form = $this->createForm(RestaurantType::class, $restaurant);

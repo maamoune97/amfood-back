@@ -12,7 +12,7 @@
       </ol>
     <div class="row mb-2">
         <div class="col-12 col-md-8">
-            <img src="{{ asset("/media/images/uploads/sections/" ~ section.image) }}"
+            <img src="{{ asset(section.image) }}"
                 alt="bannière du {{section.name}}" class="img-fluid img-thumbnail" style="max-width: 555px;"
                 srcset="">
         </div>
@@ -37,11 +37,11 @@
             {% for article in section.articles %}
                 <div class="col-12 col-md-4 mb-4">
                     <div class="card" style="width: 18rem;">
-                        <img src="{{ asset("/media/images/uploads/articles/" ~ article.image)}}" class="card-img-top resize" alt="image - {{article.name}}">
+                        <img src="{{ asset(article.image)}}" class="card-img-top resize" alt="image - {{article.name}}">
                         <div class="card-body">
                             <h5 class="card-title">{{article.name}}</h5>
                             <p class="card-text">({{article.ingredient}})</p>
-                            <h4 class="float-right" >{{article.price |number_format('0', '', ' ') }} Fc</h4>
+                            <h4 class="float-right" >{{article.price | price}}</h4>
                             <div class="clear mt-2">
                                 <a href="{{path('article_show', {'id': article.id})}}" class="btn btn-primary btn-sm">Voir</a>
                                 <a href="{{path('article_remove', {'id': article.id})}}" class="btn btn-danger float-right btn-sm">Supprimer</a>

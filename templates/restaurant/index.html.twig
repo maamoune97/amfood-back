@@ -26,7 +26,7 @@
 				<tbody>
 					{% for restaurant in restaurants %}
 						<tr class="align-middle">
-							<td><img src="{{ asset("/media/images/uploads/restaurants/" ~ restaurant.imageLogo) }}" alt="logo - {{restaurant.name}}" class="img-thumbnail img-fluid img-mini"></td>
+							<td><img src="{{ asset(restaurant.imageLogo) }}" alt="logo - {{restaurant.name}}" class="img-thumbnail img-fluid img-mini"></td>
 							<td>{{restaurant.name}}</td>
 							<td>{{restaurant.location}}</td>
 							<td>{{restaurant.phone}}</td>

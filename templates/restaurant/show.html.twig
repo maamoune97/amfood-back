@@ -11,7 +11,7 @@
       </ol>
     <div class="row mb-2">
         <div class="col-12 col-md-7">
-            <img src="{{ asset("/media/images/uploads/restaurants/" ~ restaurant.imageLogo) }}"
+            <img src="{{ asset(restaurant.imageLogo) }}"
                 alt="bannière du {{restaurant.name}}" class="img-fluid img-thumbnail" style="max-width: 555px;"
                 srcset="">
         </div>
@@ -39,12 +39,12 @@
         {% for section in restaurant.sections %}
             <div class="col-12 col-md-4 mb-4">
                 <div class="card" style="width: 18rem;">
-                    <img src="{{ asset("/media/images/uploads/sections/" ~ section.image)}}" class="card-img-top resize" alt="...">
+                    <img src="{{ asset(section.image)}}" class="card-img-top resize" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">{{section.name}}</h5>
                         <ul class="list-group list-group-flush">
                             {% for article in section.articles %}
-                                <li class="list-group-item">{{article.name}} <span class="float-right font-weight-bold" >{{article.price | number_format('0', ',', ' ')}} Fc</span></li>
+                                <li class="list-group-item">{{article.name}} <span class="float-right font-weight-bold" >{{article.price | price}}</span></li>
                             {% endfor %}
                         </ul>
                         <a href="{{path('section_show', {'id': section.id})}}" class="btn btn-primary btn-sm">Voir</a>

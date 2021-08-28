@@ -87,7 +87,7 @@ class ArticleController extends AbstractController
         $oldImage = $article->getImage();
 
         $article->setImage(
-            new File($this->getParameter('uploads_image_directory').'articles/'.$article->getImage())
+            new File($this->getParameter('uploads_image_directory_path').'articles/'.$article->getImage())
         );
 
         $form = $this->createForm(ArticleType::class, $article);
