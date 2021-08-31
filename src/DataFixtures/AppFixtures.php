@@ -141,7 +141,7 @@ class AppFixtures extends Fixture
             for ($o = 0; $o < mt_rand(0, 10); $o++) {
                 $order = new Order();
 
-                $order->setCreatedAt(new DateTime())
+                $order->setCreatedAt($faker->dateTimeBetween('-6 months'))
                     ->setCustomer($faker->randomElement($users))
                     ->setStatus($faker->randomElement([0,1,2,3]))
                     ->setRestaurant($restaurant);

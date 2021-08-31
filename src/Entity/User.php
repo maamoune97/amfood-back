@@ -78,6 +78,7 @@ class User implements UserInterface
 
     /**
      * @ORM\OneToOne(targetEntity=RestaurantManager::class, mappedBy="user", cascade={"persist", "remove"})
+     * @Groups({"user_read"})
      */
     private $restaurantManager;
 

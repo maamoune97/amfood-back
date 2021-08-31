@@ -48,7 +48,7 @@
                             {% endfor %}
                         </ul>
                         <a href="{{path('section_show', {'id': section.id})}}" class="btn btn-primary btn-sm">Voir</a>
-                        <a href="{{path('section_delete', {'id':section.id})}}" class="btn btn-danger float-right btn-sm">Supprimer</a>
+                        <a onclick="return confirm('voullez vous vraiment supprimé cette section?')" href="{{path('section_delete', {'id':section.id})}}" class="btn btn-danger float-right btn-sm">Supprimer</a>
                     </div>
                 </div>
             </div>

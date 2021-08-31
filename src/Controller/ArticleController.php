@@ -131,9 +131,13 @@ class ArticleController extends AbstractController
      */
     public function remove(Article $article)
     {
-        $this->manager->remove($article);
-        $this->manager->flush();
-        $this->addFlash('success','Article '. $article->getName() .' supprimer avec succès');
+        try {
+            $this->manager->remove($article);
+            $this->manager->flush();
+            $this->addFlash('success','Article '. $article->getName() .' supprimer avec succès');
+        } catch (\Throwable $th) {
+            $this->addFlash('danger', $article->getName().' possède des commandes, impossible de le supprimer');
+        }
         return $this->redirectToRoute('section_show', [
             'id' => $article->getSection()->getId(),
         ]);

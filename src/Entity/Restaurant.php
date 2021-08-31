@@ -88,6 +88,7 @@ class Restaurant
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"user_read"})
      */
     private $createdAt;
 

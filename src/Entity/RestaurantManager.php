@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\RestaurantManagerRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\RestaurantManagerRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=RestaurantManagerRepository::class)
@@ -14,6 +15,7 @@ class RestaurantManager
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"user_read"})
      */
     private $id;
 
@@ -25,12 +27,14 @@ class RestaurantManager
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"user_read"})
      */
     private $createdAt;
 
     /**
      * @ORM\OneToOne(targetEntity=Restaurant::class, inversedBy="manager", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user_read"})
      */
     private $restaurant;
 

@@ -96,9 +96,13 @@ class SectionController extends AbstractController
      */
     public function remove(Section $section)
     {
-        $this->manager->remove($section);
-        $this->manager->flush();
-        $this->addFlash('success','Section '. $section->getName() .' supprimer avec succès');
+        try {
+            $this->manager->remove($section);
+            $this->manager->flush();
+            $this->addFlash('success','Section '. $section->getName() .' supprimer avec succès');
+        } catch (\Throwable $th) {
+            $this->addFlash('danger',$section->getName() .' possède des articles avec des commandes, impossible de le supprimer');
+        }
         return $this->redirectToRoute('restaurant_show', [
             'id' => $section->getRestaurant()->getId(),
         ]);

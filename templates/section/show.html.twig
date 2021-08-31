@@ -44,7 +44,7 @@
                             <h4 class="float-right" >{{article.price | price}}</h4>
                             <div class="clear mt-2">
                                 <a href="{{path('article_show', {'id': article.id})}}" class="btn btn-primary btn-sm">Voir</a>
-                                <a href="{{path('article_remove', {'id': article.id})}}" class="btn btn-danger float-right btn-sm">Supprimer</a>
+                                <a onclick="return confirm('voullez vous vraiment supprimé cet article?')" href="{{path('article_remove', {'id': article.id})}}" class="btn btn-danger float-right btn-sm">Supprimer</a>
                             </div>
                         </div>
                     </div>
