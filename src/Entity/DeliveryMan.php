@@ -21,13 +21,14 @@ class DeliveryMan
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"user_read", "order_refused_read", "delivery_read"})
+     * @Groups({"user_read", "order_refused_read", "delivery_read", "order_read"})
      */
     private $id;
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, inversedBy="deliveryMan", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"order_read"})
      */
     private $user;
 

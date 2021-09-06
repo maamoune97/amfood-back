@@ -67,9 +67,7 @@ class Restaurant
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"restaurants_subresource", "restaurant_read"})
-     * * @Assert\Email(
-     *     message = "Entrez un adresse email valide!"
-     * )
+     * @Assert\Email(message = "Entrez un adresse email valide!")
      */
     private $email;
 

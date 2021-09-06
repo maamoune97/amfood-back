@@ -178,6 +178,25 @@ class RestaurantController extends AbstractController
     /**
      * Remove restaurant
      *
+     * @Route("/disable-enable/{id}", name="disable_enable")
+     * 
+     * @param Restaurant $restaurant
+     * @param Request $request
+     * @return void
+     */
+
+    public function disabledOrEnabled(Restaurant $restaurant) : Response
+    {
+        $restaurant->setActivate(!$restaurant->getActivate());
+        $this->manager->persist($restaurant);
+        $this->manager->flush();
+
+        return $this->redirectToRoute('restaurant_show', ['id' => $restaurant->getId()]);
+    }
+    
+    /**
+     * Remove restaurant
+     *
      * @Route("/remove/{id}", name="remove", methods={"POST"})
      * 
      * @param Restaurant $restaurant
@@ -191,7 +210,7 @@ class RestaurantController extends AbstractController
             $this->manager->flush();
             return $this->redirectToRoute('restaurant_index');
         } catch (NotFoundResourceException $th) {
-            return $this->createNotFoundException("Impossible de supprmer ce restaurant");
+            return $this->createNotFoundException("Ce restaurant possède des commandes, impossible de le supprimer");
         }
     }
 }

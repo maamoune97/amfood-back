@@ -54,7 +54,7 @@ class Delivery
 
     /**
      * @ORM\ManyToOne(targetEntity=DeliveryMan::class, inversedBy="deliveries")
-     * @Groups({"delivery_read"})
+     * @Groups({"delivery_read", "order_read"})
      */
     private $deliveryMan;
 

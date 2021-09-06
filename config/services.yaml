@@ -35,3 +35,8 @@ services:
     App\Service\MercureCookieGenerator:
         arguments:
             $secretKey: '%env(MERCURE_SECRECT_KEY)%'
+
+    # App\Doctrine\HideRestaurantExtension:
+    #     tags:
+    #         - { name: api_platform.doctrine.orm.query_extension.collection }
+    #         - { name: api_platform.doctrine.orm.query_extension.item }
