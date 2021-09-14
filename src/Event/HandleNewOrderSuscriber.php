@@ -7,6 +7,7 @@ use App\Entity\Order;
 use App\Entity\User;
 use DateTime;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Security;
@@ -42,6 +43,14 @@ class HandleNewOrderSuscriber implements EventSubscriberInterface
             $order = $result;
             unset($result);
 
+            //check if restaurant is open to be able to continue
+            if(!$order->getRestaurant()->isOpen())
+            {
+                $data = ['error' => true, 'ErrorMessage' => 'Restaurant closed', 'errorCode' => 1];
+                $event->setControllerResult(new JsonResponse($data, 400));
+                return;
+            }
+            
             $order->setCustomer($this->user);
             $order->setCreatedAt(new DateTime());
         }

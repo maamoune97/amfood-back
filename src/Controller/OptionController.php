@@ -4,11 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Entity\Option;
-use App\Entity\OptionField;
 use App\Form\OptionType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -79,6 +79,26 @@ class OptionController extends AbstractController
 
         return $this->render('option/new.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * Remove option
+     * @Route("/remove/{id}", name="remove")
+     * @param Option $option
+     * @return Response
+     */
+    public function remove(Option $option)
+    {
+        try {
+            $this->manager->remove($option);
+            $this->manager->flush();
+            $this->addFlash('success','Option '. $option->getName() .' supprimer avec succès');
+        } catch (\Throwable $th) {
+            $this->addFlash('danger', "L'option ".$option->getName() .' possède des commandes, impossible de le supprimer');
+        }
+        return $this->redirectToRoute('article_show', [
+            'id' => $option->getArticle()->getId(),
         ]);
     }
 }

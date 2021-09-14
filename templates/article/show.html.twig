@@ -48,7 +48,7 @@
                         </ul>
                         <div class="card-footer">
                             <a href="{{path('option_edit', {'option': option.id})}}" class="btn btn-primary btn-sm">Editer</a>
-                            <a href="#" class="btn btn-danger float-right btn-sm">Supprimer</a>
+                            <a onclick="return confirm('voullez vous vraiment supprimé cet option?')" href="{{path('option_remove', {'id': option.id})}}" class="btn btn-danger float-right btn-sm">Supprimer</a>
                         </div>
                     </div>
                 </div>

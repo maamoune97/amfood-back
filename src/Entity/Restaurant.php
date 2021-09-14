@@ -24,7 +24,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *  "groups" = {"restaurant_read"}
  * },
  * collectionOperations={"get"},
- * itemOperations={"get"},
+ * itemOperations={"get", "patch"},
  * subresourceOperations={"api_cities_restaurants_get_subresource" = {
  *      "normalization_context"={"groups" = "restaurants_subresource"}
  *  }
@@ -111,6 +111,12 @@ class Restaurant
      * @Groups({"restaurant_read"})
      */
     private $sections;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": 0})
+     * @Groups({"restaurants_subresource", "restaurant_read", "user_read"})
+     */
+    private $open;
 
     /**
      * @ORM\PrePersist
@@ -330,6 +336,18 @@ class Restaurant
                 $section->setRestaurant(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isOpen(): ?bool
+    {
+        return $this->open;
+    }
+
+    public function setOpen(bool $open): self
+    {
+        $this->open = $open;
 
         return $this;
     }
