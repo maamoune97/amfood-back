@@ -89,6 +89,11 @@ class Order
      */
     private $refuseds;
 
+    /**
+     * @ORM\Column(type="string", length=15)
+     */
+    private $orderNumber;
+
     public function __construct()
     {
         $this->orderArticlePacks = new ArrayCollection();
@@ -256,6 +261,18 @@ class Order
                 $refused->setCommand(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getOrderNumber(): ?string
+    {
+        return $this->orderNumber;
+    }
+
+    public function setOrderNumber(string $orderNumber): self
+    {
+        $this->orderNumber = $orderNumber;
 
         return $this;
     }

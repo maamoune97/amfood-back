@@ -51,8 +51,9 @@ class HandleNewOrderSuscriber implements EventSubscriberInterface
                 return;
             }
             
-            $order->setCustomer($this->user);
-            $order->setCreatedAt(new DateTime());
+            $order->setCustomer($this->user)
+                  ->setCreatedAt(new DateTime())
+                  ->setOrderNumber((new DateTime)->format('sH-z-yi'));
         }
     }
 }

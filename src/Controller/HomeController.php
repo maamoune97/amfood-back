@@ -7,6 +7,7 @@ use App\Repository\DeliveryManRepository;
 use App\Repository\OrderRepository;
 use App\Repository\RestaurantRepository;
 use App\Repository\UserRepository;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -18,7 +19,6 @@ class HomeController extends AbstractController
      */
     public function index(UserRepository $ur, OrderRepository $or, DeliveryManRepository $dmr, RestaurantRepository $rr, CityRepository $cr)
     {
-
 
         $figures = [];
         $figures['users'] = count($ur->findAll());
