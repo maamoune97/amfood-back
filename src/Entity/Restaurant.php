@@ -37,13 +37,13 @@ class Restaurant
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"restaurants_subresource", "restaurant_read", "orderWrite", "order_read", "user_read", "delivery_read"})
+     * @Groups({"restaurants_subresource", "restaurant_read", "orderWrite", "order_read", "user_read", "delivery_read", "research_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Groups({"restaurants_subresource", "restaurant_read", "order_read", "user_read", "delivery_read"})
+     * @Groups({"restaurants_subresource", "restaurant_read", "order_read", "user_read", "delivery_read", "research_read"})
      * @Assert\NotBlank(message="le nom du réstaurant est obligatoire!")
      * 
      */
@@ -79,7 +79,7 @@ class Restaurant
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"restaurants_subresource", "restaurant_read", "user_read", "delivery_read"})
+     * @Groups({"restaurants_subresource", "restaurant_read", "user_read", "delivery_read", "research_read"})
      *
      */
     private $imageLogo;
@@ -114,7 +114,7 @@ class Restaurant
 
     /**
      * @ORM\Column(type="boolean", options={"default": 0})
-     * @Groups({"restaurants_subresource", "restaurant_read", "user_read"})
+     * @Groups({"restaurants_subresource", "restaurant_read", "user_read", "research_read"})
      */
     private $open;
 

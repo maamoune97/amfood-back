@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Menu;
 use App\Entity\Restaurant;
 use App\Entity\Section;
 use App\Form\SectionType;
@@ -121,7 +120,7 @@ class SectionController extends AbstractController
         $oldImage = $section->getImage();
 
         $section->setImage(
-            new File($this->getParameter('uploads_image_directory_path').'sections/'.$section->getImage())
+            new File($section->getImage())
         );
         
         $form = $this->createForm(SectionType::class, $section);

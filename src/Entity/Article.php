@@ -36,13 +36,13 @@ class Article
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"orderWrite", "restaurant_read", "article_read", "user_read", "order_read"})
+     * @Groups({"orderWrite", "restaurant_read", "article_read", "user_read", "order_read", "research_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"restaurant_read","article_read", "user_read", "order_read"})
+     * @Groups({"restaurant_read","article_read", "user_read", "order_read", "research_read"})
      * @Assert\NotNull(message ="Entrez le nom de l'article")
      */
     private $name;
@@ -55,7 +55,7 @@ class Article
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"restaurant_read","article_read", "user_read", "order_read"})
+     * @Groups({"restaurant_read","article_read", "user_read", "order_read", "research_read"})
      * @Assert\NotNull(message ="Entrez le prix de l'article")
      */
     private $price;
@@ -86,7 +86,7 @@ class Article
 
 
     /**
-     * @Groups({"article_read"})
+     * @Groups({"article_read", "research_read"})
      *
      * @return string
      */

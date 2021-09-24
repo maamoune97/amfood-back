@@ -37,14 +37,14 @@ class Order
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"user_read", "orderWrite", "order_read", "order_refused_read", "delivery_read"})
+     * @Groups({"user_read", "order_read", "order_refused_read", "delivery_read"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="orders")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"order_read", "order_read"})
+     * @Groups({"order_read"})
      */
     private $customer;
 
@@ -91,6 +91,7 @@ class Order
 
     /**
      * @ORM\Column(type="string", length=15)
+     * @Groups({"user_read", "order_read", "order_refused_read", "delivery_read"})
      */
     private $orderNumber;
 

@@ -124,7 +124,7 @@ class RestaurantController extends AbstractController
         $oldImageLogo = $restaurant->getImageLogo();
 
         $restaurant->setImageLogo(
-            new File($this->getParameter('uploads_image_directory_path').'/restaurants\/'.$restaurant->getImageLogo())
+            new File($restaurant->getImageLogo())
             );
         
         $form = $this->createForm(RestaurantType::class, $restaurant);
@@ -157,11 +157,11 @@ class RestaurantController extends AbstractController
             }
             
 
-            $users = $userRepository->findByRestaurant($restaurant->getId());
-            foreach ($users as $user) {
-                $user->setRestaurant(null);
-                $this->manager->persist($user);
-            }
+            // $users = $userRepository->findByRestaurant($restaurant->getId());
+            // foreach ($users as $user) {
+            //     $user->setRestaurant(null);
+            //     $this->manager->persist($user);
+            // }
 
             $this->manager->persist($restaurant);
             $this->manager->flush();

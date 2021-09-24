@@ -32,13 +32,13 @@ class Section
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"restaurant_read"})
+     * @Groups({"restaurant_read", "research_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"restaurant_read"})
+     * @Groups({"restaurant_read", "research_read"})
      * @Assert\NotNull(message="Entrez le nom de la séction")
      */
     private $name;
@@ -67,6 +67,15 @@ class Section
      */
     private $restaurant;
 
+    /**
+     * @Groups({"research_read"})
+     *
+     * @return string
+     */
+    public function getRestaurantName()
+    {
+        return $this->getRestaurant()->getName();
+    }
 
     /**
      * Remove automaticaly image File when Section was removed
